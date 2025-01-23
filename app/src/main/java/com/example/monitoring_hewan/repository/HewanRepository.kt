@@ -45,7 +45,7 @@ class NetworkHewanRepository(
         hewanApiService.getAllHewan()
 
     override suspend fun getHewanByid_hewan(id_hewan: String): Hewan{
-        return hewanApiService.getHewanbyId(id_hewan).data
+        return hewanApiService.getHewanbyId_hewan(id_hewan).data
     }
 
 }
