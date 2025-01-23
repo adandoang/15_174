@@ -19,7 +19,7 @@ sealed class DetailUiState {
     object Loading : DetailUiState()
 }
 
-class DetailViewModel(
+class DetailHewanViewModel(
     savedStateHandle: SavedStateHandle,
     private val hwn: HewanRepository
 ) : ViewModel() {
@@ -30,10 +30,10 @@ class DetailViewModel(
     private val _id_hewan: String = checkNotNull(savedStateHandle[DestinasiDetail.ID_HEWAN])
 
     init {
-        getHewanbyId()
+        getHewanbyId_hewan()
     }
 
-    fun getHewanbyId() {
+    fun getHewanbyId_hewan() {
         viewModelScope.launch {
             hewanDetailState = DetailUiState.Loading
             hewanDetailState = try {

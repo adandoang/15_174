@@ -22,10 +22,10 @@ class HomeHewanViewModel (private val hwn: HewanRepository):ViewModel() {
         private set
 
     init {
-        gethwn()
+        getHwn()
     }
 
-    fun gethwn(){
+    fun getHwn(){
         viewModelScope.launch {
             hwnUIState= HomeUiState.Loading
             hwnUIState=try {
@@ -38,7 +38,7 @@ class HomeHewanViewModel (private val hwn: HewanRepository):ViewModel() {
         }
     }
 
-    fun deletehwn(id_hewan:String) {
+    fun deleteHwn(id_hewan:String) {
         viewModelScope.launch {
             try {
                 hwn.deleteHewan(id_hewan)
