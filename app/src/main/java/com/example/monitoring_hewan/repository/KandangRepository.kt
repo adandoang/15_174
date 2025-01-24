@@ -1,4 +1,5 @@
 package com.example.monitoring_hewan.repository
+
 import com.example.monitoring_hewan.model.AllKandangResponse
 import com.example.monitoring_hewan.model.Kandang
 import com.example.monitoring_hewan.service.KandangService

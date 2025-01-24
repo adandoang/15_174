@@ -13,12 +13,12 @@ data class Petugas (
 data class AllPetugasResponse(
     val status: Boolean,
     val message: String,
-    val data:List<Kandang>
+    val data:List<Petugas>
 )
 
 @Serializable
 data class PetugasDetailResponse(
     val status: Boolean,
     val message: String,
-    val data: Kandang
+    val data: Petugas
 )

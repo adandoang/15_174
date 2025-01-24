@@ -4,8 +4,11 @@ import com.example.monitoring_hewan.repository.HewanRepository
 import com.example.monitoring_hewan.repository.KandangRepository
 import com.example.monitoring_hewan.repository.NetworkHewanRepository
 import com.example.monitoring_hewan.repository.NetworkKandangRepository
+import com.example.monitoring_hewan.repository.NetworkPetugasRepository
+import com.example.monitoring_hewan.repository.PetugasRepository
 import com.example.monitoring_hewan.service.HewanService
 import com.example.monitoring_hewan.service.KandangService
+import com.example.monitoring_hewan.service.PetugasService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -15,6 +18,7 @@ import retrofit2.Retrofit
 interface AppContainer{
     val hewanRepository: HewanRepository
     val kandangRepository: KandangRepository
+    val petugasRepository: PetugasRepository
 }
 
 class Container : AppContainer {
@@ -35,5 +39,11 @@ class Container : AppContainer {
     }
     override val kandangRepository: KandangRepository by lazy {
         NetworkKandangRepository(kandangService)
+    }
+    private val petugasService: PetugasService by lazy {
+        retrofit.create(PetugasService::class.java)
+    }
+    override val petugasRepository: PetugasRepository by lazy {
+        NetworkPetugasRepository(petugasService)
     }
 }
