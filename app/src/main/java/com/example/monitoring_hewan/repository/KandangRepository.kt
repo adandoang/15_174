@@ -43,7 +43,7 @@ class NetworkKandangRepository(
         kandangApiService.getAllKandang()
 
     override suspend fun getKandangByid_kandang(id_kandang: String): Kandang{
-        return kandangApiService.getKandangById_kandang(id_kandang).data
+        return kandangApiService.getKandangbyId_kandang(id_kandang).data
     }
 
 }

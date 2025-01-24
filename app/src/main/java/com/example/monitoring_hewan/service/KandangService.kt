@@ -22,7 +22,7 @@ interface KandangService {
     suspend fun getAllKandang(): AllKandangResponse
 
     @GET("kandang/{id_kandang}")
-    suspend fun getKandangById_kandang(@Path("id_kandang") id_kandang: String): KandangDetailResponse
+    suspend fun getKandangbyId_kandang(@Path("id_kandang") id_kandang: String): KandangDetailResponse
 
     @POST("kandang/store")
     suspend fun insertKandang(@Body kandang: Kandang)
