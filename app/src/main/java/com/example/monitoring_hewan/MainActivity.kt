@@ -20,8 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Monitoring_HewanTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
+                    HewanApp(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }

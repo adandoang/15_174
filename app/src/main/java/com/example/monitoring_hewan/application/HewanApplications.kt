@@ -1,4 +1,4 @@
-package com.example.monitoring_hewan
+package com.example.monitoring_hewan.application
 
 import android.app.Application
 import com.example.monitoring_hewan.dependenciesinjection.AppContainer

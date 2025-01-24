@@ -5,7 +5,7 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.monitoring_hewan.HewanApplications
+import com.example.monitoring_hewan.application.HewanApplications
 import com.example.monitoring_hewan.viewmodel.hewanvm.DetailHewanViewModel
 import com.example.monitoring_hewan.viewmodel.hewanvm.HomeHewanViewModel
 import com.example.monitoring_hewan.viewmodel.hewanvm.InsertHewanViewModel

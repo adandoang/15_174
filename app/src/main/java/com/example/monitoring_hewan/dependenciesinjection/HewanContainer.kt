@@ -8,6 +8,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 
+
 interface AppContainer{
     val hewanRepository: HewanRepository
 }
@@ -20,7 +21,7 @@ class HewanContainer : AppContainer {
         .baseUrl(baseUrl).build()
 
     private val hewanService: HewanService by lazy {
-        retrofit.create(hewanService::class.java)
+        retrofit.create(HewanService::class.java)
     }
     override val hewanRepository: HewanRepository by lazy {
         NetworkHewanRepository(hewanService)

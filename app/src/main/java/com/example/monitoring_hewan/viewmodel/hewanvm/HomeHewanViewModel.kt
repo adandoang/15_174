@@ -5,11 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import coil.network.HttpException
 import com.example.monitoring_hewan.model.Hewan
 import com.example.monitoring_hewan.repository.HewanRepository
 import kotlinx.coroutines.launch
 import okio.IOException
+import retrofit2.HttpException
 
 sealed class HomeUiState{
     data class Success(val hewan: List<Hewan>): HomeUiState()
@@ -32,7 +32,7 @@ class HomeHewanViewModel (private val hwn: HewanRepository):ViewModel() {
                 HomeUiState.Success(hwn.getHewan().data)
             }catch (e:IOException){
                 HomeUiState.Error
-            }catch (e:HttpException){
+            }catch (e: HttpException){
                 HomeUiState.Error
             }
         }

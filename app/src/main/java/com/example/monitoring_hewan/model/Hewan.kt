@@ -14,13 +14,13 @@ data class Hewan (
 @Serializable
 data class AllHewanResponse(
     val status: Boolean,
-    val messag: String,
+    val message: String,
     val data:List<Hewan>
 )
 
 @Serializable
 data class HewanDetailResponse(
     val status: Boolean,
-    val messag: String,
+    val message: String,
     val data: Hewan
 )

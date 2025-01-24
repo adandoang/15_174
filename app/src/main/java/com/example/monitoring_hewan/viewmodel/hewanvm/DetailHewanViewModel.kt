@@ -6,11 +6,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import coil.network.HttpException
 import com.example.monitoring_hewan.model.Hewan
 import com.example.monitoring_hewan.repository.HewanRepository
 import com.example.monitoring_hewan.view.hewanview.DestinasiDetail
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import java.io.IOException
 
 sealed class DetailUiState {
