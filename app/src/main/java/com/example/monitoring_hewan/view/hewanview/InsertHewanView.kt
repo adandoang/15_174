@@ -41,7 +41,7 @@ import com.example.monitoring_hewan.viewmodel.hewanvm.InsertUiEvent
 import com.example.monitoring_hewan.viewmodel.hewanvm.InsertUiState
 import kotlinx.coroutines.launch
 
-object DestinasiEntry: DestinasiNavigasi {
+object DestinasiEntryHewan: DestinasiNavigasi {
     override val route ="item_entry"
     override val titleRes = "Insert Mahasiswa"
 }
@@ -59,7 +59,7 @@ fun EntryHwnScreen(
         modifier=modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             CostumeTopAppBar(
-                title = DestinasiEntry.titleRes,
+                title = DestinasiEntryHewan.titleRes,
                 canNavigateBack = true,
                 scrollBehavior = scrollBehavior,
                 navigateUp = navigateBack

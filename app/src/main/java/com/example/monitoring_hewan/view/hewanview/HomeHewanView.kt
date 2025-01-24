@@ -44,7 +44,7 @@ import com.example.monitoring_hewan.viewmodel.PenyediaViewModel
 import com.example.monitoring_hewan.viewmodel.hewanvm.HomeHewanViewModel
 import com.example.monitoring_hewan.viewmodel.hewanvm.HomeUiState
 
-object DestinasiHome : DestinasiNavigasi {
+object DestinasiHomeHewan : DestinasiNavigasi {
     override val route = "homehewan"
     override val titleRes = "Hewan"
 }
@@ -62,7 +62,7 @@ fun HomeScreen(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             CostumeTopAppBar(
-                title = DestinasiHome.titleRes,
+                title = DestinasiHomeHewan.titleRes,
                 canNavigateBack = false,
                 scrollBehavior = scrollBehavior,
                 onRefresh = {

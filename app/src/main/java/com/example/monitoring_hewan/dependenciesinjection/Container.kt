@@ -1,8 +1,11 @@
 package com.example.monitoring_hewan.dependenciesinjection
 
 import com.example.monitoring_hewan.repository.HewanRepository
+import com.example.monitoring_hewan.repository.KandangRepository
 import com.example.monitoring_hewan.repository.NetworkHewanRepository
+import com.example.monitoring_hewan.repository.NetworkKandangRepository
 import com.example.monitoring_hewan.service.HewanService
+import com.example.monitoring_hewan.service.KandangService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -11,10 +14,11 @@ import retrofit2.Retrofit
 
 interface AppContainer{
     val hewanRepository: HewanRepository
+    val kandangRepository: KandangRepository
 }
 
-class HewanContainer : AppContainer {
-    private val baseUrl = "http://10.0.2.2:3000/api/hewan/"
+class Container : AppContainer {
+    private val baseUrl = "http://10.0.2.2:3000/api/"
     private val json = Json { ignoreUnknownKeys = true }
     private val retrofit: Retrofit = Retrofit.Builder()
         .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
@@ -25,5 +29,11 @@ class HewanContainer : AppContainer {
     }
     override val hewanRepository: HewanRepository by lazy {
         NetworkHewanRepository(hewanService)
+    }
+    private val kandangService: KandangService by lazy {
+        retrofit.create(KandangService::class.java)
+    }
+    override val kandangRepository: KandangRepository by lazy {
+        NetworkKandangRepository(kandangService)
     }
 }

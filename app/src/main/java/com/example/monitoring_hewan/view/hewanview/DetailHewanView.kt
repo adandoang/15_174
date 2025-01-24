@@ -38,7 +38,7 @@ import com.example.monitoring_hewan.viewmodel.PenyediaViewModel
 import com.example.monitoring_hewan.viewmodel.hewanvm.DetailHewanViewModel
 import com.example.monitoring_hewan.viewmodel.hewanvm.DetailUiState
 
-object DestinasiDetail: DestinasiNavigasi {
+object DestinasiDetailHewan: DestinasiNavigasi {
     override val route = "detailhewan"
     override val titleRes = "Detail Hewan"
     const val ID_HEWAN = "id_hewan"
@@ -56,7 +56,7 @@ fun DetailScreen(
     Scaffold(
         topBar = {
             CostumeTopAppBar(
-                title = DestinasiDetail.titleRes,
+                title = DestinasiDetailHewan.titleRes,
                 canNavigateBack = true,
                 navigateUp = navigateBack,
                 onRefresh = {

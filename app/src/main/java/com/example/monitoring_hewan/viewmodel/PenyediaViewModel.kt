@@ -5,7 +5,7 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.monitoring_hewan.application.HewanApplications
+import com.example.monitoring_hewan.application.Applications
 import com.example.monitoring_hewan.viewmodel.hewanvm.DetailHewanViewModel
 import com.example.monitoring_hewan.viewmodel.hewanvm.HomeHewanViewModel
 import com.example.monitoring_hewan.viewmodel.hewanvm.InsertHewanViewModel
@@ -18,6 +18,6 @@ object PenyediaViewModel{
         initializer { DetailHewanViewModel(createSavedStateHandle(),aplikasiHewan().container.hewanRepository) }
         initializer { UpdateHewanViewModel(createSavedStateHandle(),aplikasiHewan().container.hewanRepository) }
     }
-    fun CreationExtras.aplikasiHewan(): HewanApplications =
-        (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY]as HewanApplications)
+    fun CreationExtras.aplikasiHewan(): Applications =
+        (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY]as Applications)
 }

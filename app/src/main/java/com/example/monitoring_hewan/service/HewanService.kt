@@ -18,18 +18,18 @@ interface HewanService {
         "Content-Type: application/json",
     )
 
-    @GET(".")
+    @GET("hewan/")
     suspend fun getAllHewan(): AllHewanResponse
 
-    @GET("{id_hewan}")
+    @GET("hewan/{id_hewan}")
     suspend fun getHewanbyId_hewan(@Path("id_hewan")id_hewan: String): HewanDetailResponse
 
-    @POST("store")
+    @POST("hewan/store")
     suspend fun insertHewan(@Body hewan: Hewan)
 
-    @PUT("{id_hewan}")
+    @PUT("hewan/{id_hewan}")
     suspend fun updateHewan(@Path("id_hewan")id_hewan: String, @Body hewan: Hewan)
 
-    @DELETE("{id_hewan}")
+    @DELETE("hewan/{id_hewan}")
     suspend fun deleteHewan(@Path("id_hewan")id_hewan: String):retrofit2.Response<Void>
 }

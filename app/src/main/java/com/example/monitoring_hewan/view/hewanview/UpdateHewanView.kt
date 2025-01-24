@@ -18,7 +18,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-object DestinasiUpdate: DestinasiNavigasi {
+object DestinasiUpdateHewan: DestinasiNavigasi {
     override val route = "updatehewan"
     override val titleRes = "Update Hewan"
     const val ID_HEWAN = "id_hewan"
@@ -40,7 +40,7 @@ fun UpdateScreen(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             CostumeTopAppBar(
-                title = DestinasiUpdate.titleRes,
+                title = DestinasiUpdateHewan.titleRes,
                 canNavigateBack = true,
                 scrollBehavior = scrollBehavior,
                 navigateUp = onBack,

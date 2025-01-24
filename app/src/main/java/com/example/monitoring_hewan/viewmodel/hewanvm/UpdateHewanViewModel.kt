@@ -7,7 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.monitoring_hewan.repository.HewanRepository
-import com.example.monitoring_hewan.view.hewanview.DestinasiUpdate
+import com.example.monitoring_hewan.view.hewanview.DestinasiUpdateHewan
 import kotlinx.coroutines.launch
 
 class UpdateHewanViewModel (
@@ -17,7 +17,7 @@ class UpdateHewanViewModel (
     var UpdateUiState by mutableStateOf(InsertUiState())
         private set
 
-    private val _id_hewan: String = checkNotNull(savedStateHandle[DestinasiUpdate.ID_HEWAN])
+    private val _id_hewan: String = checkNotNull(savedStateHandle[DestinasiUpdateHewan.ID_HEWAN])
 
     init {
         viewModelScope.launch {

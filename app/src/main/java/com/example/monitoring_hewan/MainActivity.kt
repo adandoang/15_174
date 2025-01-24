@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Monitoring_HewanTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    HewanApp(
+                    App(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }

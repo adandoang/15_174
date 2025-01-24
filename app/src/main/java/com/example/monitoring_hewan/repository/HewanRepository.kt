@@ -17,7 +17,6 @@ class NetworkHewanRepository(
     private val hewanApiService: HewanService
 ) : HewanRepository {
 
-
     override suspend fun insertHewan(hewan: Hewan) {
         hewanApiService.insertHewan(hewan)
     }
