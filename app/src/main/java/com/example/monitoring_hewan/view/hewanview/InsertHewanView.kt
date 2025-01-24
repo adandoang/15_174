@@ -10,7 +10,10 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
@@ -18,9 +21,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -109,7 +117,9 @@ fun FormInput(
     onValueChange: (InsertUiEvent)->Unit={},
     enabled: Boolean = true
 ) {
-    val tipe_pakan = listOf("Herbivora", "Karnivora", "Omnivora")
+    var chosenDropdown = listOf("Herbivora", "Karnivora", "Omnivora")
+    var expanded by remember { mutableStateOf(false) }
+    var selectedItem by remember { mutableStateOf("") }
 
     Column (
         modifier = modifier,
@@ -132,26 +142,40 @@ fun FormInput(
             singleLine = true
         )
         Text(text = "Tipe Pakan")
-        Row (
-            modifier = Modifier.fillMaxWidth()
-        ){
-            tipe_pakan.forEach { tp ->
-                Row (
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start
-                ){
-                    RadioButton(
-                        selected = insertUiEvent.tipe_pakan == tp,
+
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = !expanded }
+        ) {
+            OutlinedTextField(
+                value = selectedItem,
+                onValueChange = { },
+                label = { Text("Jenis Hewan") },
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                },
+                modifier = Modifier.menuAnchor().fillMaxWidth(),
+                readOnly = true,
+                placeholder = { Text("Pilih Jenis") },
+                enabled = enabled
+            )
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                chosenDropdown.forEach { item ->
+                    DropdownMenuItem(
                         onClick = {
-                            onValueChange(insertUiEvent.copy(tipe_pakan = tp))
+                            selectedItem = item
+                            expanded = false
+                            onValueChange(insertUiEvent.copy(tipe_pakan = item))
                         },
-                    )
-                    Text(
-                        text = tp,
+                        text = { Text(text = item) }
                     )
                 }
             }
         }
+
         OutlinedTextField(
             value = insertUiEvent.populasi,
             onValueChange = {onValueChange(insertUiEvent.copy(populasi = it))},
