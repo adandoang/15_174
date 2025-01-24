@@ -1,4 +1,4 @@
-package com.example.monitoring_hewan.view.hewanview
+package com.example.monitoring_hewan.view.kandangview
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -12,26 +12,26 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.monitoring_hewan.customwidget.CostumeTopAppBar
 import com.example.monitoring_hewan.navigation.DestinasiNavigasi
 import com.example.monitoring_hewan.viewmodel.PenyediaViewModel
-import com.example.monitoring_hewan.viewmodel.hewanvm.UpdateHewanViewModel
+import com.example.monitoring_hewan.viewmodel.kandangvm.UpdateKandangViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-object DestinasiUpdateHewan: DestinasiNavigasi {
-    override val route = "updatehewan"
-    override val titleRes = "Update Hewan"
-    const val ID_HEWAN = "id_hewan"
-    val routesWithArg = "$route/{$ID_HEWAN}"
+object DestinasiUpdateKandang: DestinasiNavigasi {
+    override val route = "updatekandang"
+    override val titleRes = "Update Kandang"
+    const val ID_KANDANG = "id_kandang"
+    val routesWithArg = "$route/{$ID_KANDANG}"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UpdateScreenHewan(
+fun UpdateScreenKandang(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
     onNavigate:()-> Unit,
-    viewModel: UpdateHewanViewModel = viewModel(factory = PenyediaViewModel.Factory)
+    viewModel: UpdateKandangViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ){
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -40,7 +40,7 @@ fun UpdateScreenHewan(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             CostumeTopAppBar(
-                title = DestinasiUpdateHewan.titleRes,
+                title = DestinasiUpdateKandang.titleRes,
                 canNavigateBack = true,
                 scrollBehavior = scrollBehavior,
                 navigateUp = onBack,
@@ -50,12 +50,12 @@ fun UpdateScreenHewan(
         EntryBody(
             modifier = Modifier.padding(padding),
             insertUiState = viewModel.UpdateUiState,
-            onSiswaValueChange = viewModel::updateInsertHwnState,
+            onSiswaValueChange = viewModel::updateInsertKdgState,
             onSaveClick = {
                 coroutineScope.launch {
-                    viewModel.updateHwn()
+                    viewModel.updateKdg()
                     delay(600)
-                    withContext(Dispatchers.Main){
+                    withContext(Dispatchers.Main) {
                         onNavigate()
                     }
                 }

@@ -1,7 +1,5 @@
 package com.example.monitoring_hewan.viewmodel.kandangvm
 
-import com.example.monitoring_hewan.viewmodel.hewanvm.HomeUiState
-
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.monitoring_hewan.model.Kandang
 import com.example.monitoring_hewan.repository.KandangRepository
+import com.example.monitoring_hewan.view.kandangview.DestinasiDetailKandang
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException

@@ -1,4 +1,4 @@
-package com.example.monitoring_hewan.view.hewanview
+package com.example.monitoring_hewan.view.kandangview
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,35 +32,35 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.monitoring_hewan.customwidget.CostumeTopAppBar
-import com.example.monitoring_hewan.model.Hewan
+import com.example.monitoring_hewan.model.Kandang
 import com.example.monitoring_hewan.navigation.DestinasiNavigasi
 import com.example.monitoring_hewan.viewmodel.PenyediaViewModel
-import com.example.monitoring_hewan.viewmodel.hewanvm.DetailHewanViewModel
-import com.example.monitoring_hewan.viewmodel.hewanvm.DetailUiState
+import com.example.monitoring_hewan.viewmodel.kandangvm.DetailKandangViewModel
+import com.example.monitoring_hewan.viewmodel.kandangvm.DetailUiState
 
-object DestinasiDetailHewan: DestinasiNavigasi {
-    override val route = "detailhewan"
-    override val titleRes = "Detail Hewan"
-    const val ID_HEWAN = "id_hewan"
-    val routesWithArg = "$route/{$ID_HEWAN}"
+object DestinasiDetailKandang: DestinasiNavigasi {
+    override val route = "detailkandang"
+    override val titleRes = "Detail Kandang"
+    const val ID_KANDANG = "id_kandang"
+    val routesWithArg = "$route/{$ID_KANDANG}"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailScreenHewan(
+fun DetailScreenKandang(
     navigateBack: () -> Unit,
     navigateToItemUpdate: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: DetailHewanViewModel = viewModel(factory = PenyediaViewModel.Factory)
+    viewModel: DetailKandangViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
     Scaffold(
         topBar = {
             CostumeTopAppBar(
-                title = DestinasiDetailHewan.titleRes,
+                title = DestinasiDetailKandang.titleRes,
                 canNavigateBack = true,
                 navigateUp = navigateBack,
                 onRefresh = {
-                    viewModel.getHewanbyId_hewan()
+                    viewModel.getKandangbyId_kandang()
                 }
             )
         },
@@ -72,18 +72,18 @@ fun DetailScreenHewan(
             ) {
                 Icon(
                     imageVector = Icons.Default.Edit,
-                    contentDescription = "Edit Hewan"
+                    contentDescription = "Edit Kandang"
                 )
             }
         }
     ) { innerPadding ->
         DetailStatus(
             modifier = Modifier.padding(innerPadding),
-            detailUiState = viewModel.hewanDetailState,
-            retryAction = { viewModel.getHewanbyId_hewan() },
+            detailUiState = viewModel.kandangDetailState,
+            retryAction = { viewModel.getKandangbyId_kandang() },
             onDeleteClick = {
-                viewModel.deleteHwn(viewModel.hewanDetailState.let { state ->
-                    if (state is DetailUiState.Success) state.hewan.id_hewan else ""
+                viewModel.deleteKdg(viewModel.kandangDetailState.let { state ->
+                    if (state is DetailUiState.Success) state.kandang.id_kandang else ""
                 })
                 navigateBack()
             }
@@ -102,13 +102,13 @@ fun DetailStatus(
     when (detailUiState) {
         is DetailUiState.Loading -> OnLoading(modifier = modifier.fillMaxSize())
         is DetailUiState.Success -> {
-            if (detailUiState.hewan.id_hewan.isEmpty()) {
+            if (detailUiState.kandang.id_kandang.isEmpty()) {
                 Box(
                     modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center
                 ) { Text("Data tidak ditemukan") }
             } else {
-                ItemDetailHwn(
-                    hewan = detailUiState.hewan,
+                ItemDetailKdg(
+                    kandang = detailUiState.kandang,
                     modifier = modifier.fillMaxWidth(),
                     onDeleteClick = onDeleteClick
                 )
@@ -120,9 +120,9 @@ fun DetailStatus(
 
 
 @Composable
-fun ItemDetailHwn(
+fun ItemDetailKdg(
     modifier: Modifier = Modifier,
-    hewan: Hewan,
+    kandang: Kandang,
     onDeleteClick: () -> Unit
 ) {
     var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
@@ -134,15 +134,13 @@ fun ItemDetailHwn(
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            ComponentDetailHwn(judul = "ID Hewan", isinya = hewan.id_hewan)
+            ComponentDetailKdg(judul = "ID Kandang", isinya = kandang.id_kandang)
             Divider(modifier = Modifier.padding(vertical = 8.dp))
-            ComponentDetailHwn(judul = "Nama Hewan", isinya = hewan.nama_hewan)
+            ComponentDetailKdg(judul = "ID Hewan", isinya = kandang.id_hewan)
             Divider(modifier = Modifier.padding(vertical = 8.dp))
-            ComponentDetailHwn(judul = "Tipe Pakan", isinya = hewan.tipe_pakan)
+            ComponentDetailKdg(judul = "Kapasitas", isinya = kandang.kapasitas.toString())
             Divider(modifier = Modifier.padding(vertical = 8.dp))
-            ComponentDetailHwn(judul = "Populasi", isinya = hewan.populasi)
-            Divider(modifier = Modifier.padding(vertical = 8.dp))
-            ComponentDetailHwn(judul = "Zona Wilayah", isinya = hewan.zona_wilayah)
+            ComponentDetailKdg(judul = "Populasi", isinya = kandang.lokasi)
 
             Spacer(modifier = Modifier.padding(8.dp))
 
@@ -171,7 +169,7 @@ fun ItemDetailHwn(
 
 
 @Composable
-fun ComponentDetailHwn(
+fun ComponentDetailKdg(
     modifier: Modifier = Modifier,
     judul: String,
     isinya: String

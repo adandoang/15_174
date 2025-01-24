@@ -1,4 +1,4 @@
-package com.example.monitoring_hewan.view.hewanview
+package com.example.monitoring_hewan.view.kandangview
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -38,37 +38,37 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.monitoring_hewan.R
 import com.example.monitoring_hewan.customwidget.CostumeTopAppBar
-import com.example.monitoring_hewan.model.Hewan
+import com.example.monitoring_hewan.model.Kandang
 import com.example.monitoring_hewan.navigation.DestinasiNavigasi
 import com.example.monitoring_hewan.viewmodel.PenyediaViewModel
-import com.example.monitoring_hewan.viewmodel.hewanvm.HomeHewanViewModel
-import com.example.monitoring_hewan.viewmodel.hewanvm.HomeUiState
+import com.example.monitoring_hewan.viewmodel.kandangvm.HomeKandangViewModel
+import com.example.monitoring_hewan.viewmodel.kandangvm.HomeUiState
 
-object DestinasiHomeHewan : DestinasiNavigasi {
-    override val route = "homehewan"
-    override val titleRes = "Hewan"
+object DestinasiHomeKandang : DestinasiNavigasi {
+    override val route = "homekandang"
+    override val titleRes = "Kandang"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreenHewan(
+fun HomeScreenKandang(
     navigateBack: ()-> Unit,
     navigateToItemEntry: ()-> Unit,
     modifier: Modifier = Modifier,
     onDetailClick: (String) -> Unit={},
-    viewModel: HomeHewanViewModel = viewModel(factory = PenyediaViewModel.Factory)
+    viewModel: HomeKandangViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ){
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold (
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             CostumeTopAppBar(
-                title = DestinasiHomeHewan.titleRes,
+                title = DestinasiHomeKandang.titleRes,
                 canNavigateBack = true,
                 navigateUp = navigateBack,
                 scrollBehavior = scrollBehavior,
                 onRefresh = {
-                    viewModel.getHwn()
+                    viewModel.getKdg()
                 }
             )
         },
@@ -78,17 +78,17 @@ fun HomeScreenHewan(
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(18.dp)
             ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Add Hewan")
+                Icon(imageVector = Icons.Default.Add, contentDescription = "Add Kandang")
             }
         }
     ){ innerPadding ->
         HomeStatus(
-            homeUiState = viewModel.hwnUIState,
-            retryAction = { viewModel.getHwn() }, modifier = Modifier.padding(innerPadding),
+            homeUiState = viewModel.kdgUIState,
+            retryAction = { viewModel.getKdg() }, modifier = Modifier.padding(innerPadding),
             onDetailClick = onDetailClick,
             onDeleteClick = {
-                viewModel.deleteHwn(it.id_hewan)
-                viewModel.getHwn()
+                viewModel.deleteKdg(it.id_kandang)
+                viewModel.getKdg()
             }
         )
     }
@@ -99,22 +99,22 @@ fun HomeStatus(
     homeUiState: HomeUiState,
     retryAction: () -> Unit,
     modifier: Modifier = Modifier,
-    onDeleteClick: (Hewan) -> Unit={},
+    onDeleteClick: (Kandang) -> Unit={},
     onDetailClick: (String) -> Unit
 ){
     when(homeUiState) {
         is HomeUiState.Loading -> OnLoading(modifier = modifier.fillMaxSize())
 
         is HomeUiState.Success ->
-            if (homeUiState.hewan.isEmpty()) {
+            if (homeUiState.kandang.isEmpty()) {
                 return Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = "Tidak ada data Hewan")
+                    Text(text = "Tidak ada data Kandang")
                 }
             } else {
-                HwnLayout(
-                    hewan = homeUiState.hewan, modifier = modifier.fillMaxWidth(),
+                KdgLayout(
+                    kandang = homeUiState.kandang, modifier = modifier.fillMaxWidth(),
                     onDetailClick = {
-                        onDetailClick(it.id_hewan)
+                        onDetailClick(it.id_kandang)
                     },
                     onDeleteClick = {
                         onDeleteClick(it)
@@ -154,25 +154,25 @@ fun OnError(retryAction: ()->Unit, modifier: Modifier = Modifier){
 }
 
 @Composable
-fun HwnLayout(
-    hewan: List<Hewan>,
+fun KdgLayout(
+    kandang: List<Kandang>,
     modifier: Modifier = Modifier,
-    onDetailClick: (Hewan) -> Unit,
-    onDeleteClick: (Hewan) -> Unit = {}
+    onDetailClick: (Kandang) -> Unit,
+    onDeleteClick: (Kandang) -> Unit = {}
 ){
     LazyColumn (
         modifier = modifier,
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ){
-        items(hewan){hewan ->
-            HwnCard(
-                hewan = hewan,
+        items(kandang){kandang ->
+            KdgCard(
+                kandang = kandang,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { onDetailClick(hewan) },
+                    .clickable { onDetailClick(kandang) },
                 onDeleteClick = {
-                    onDeleteClick(hewan)
+                    onDeleteClick(kandang)
                 }
             )
         }
@@ -180,10 +180,10 @@ fun HwnLayout(
 }
 
 @Composable
-fun HwnCard(
-    hewan: Hewan,
+fun KdgCard(
+    kandang: Kandang,
     modifier: Modifier = Modifier,
-    onDeleteClick: (Hewan) -> Unit ={}
+    onDeleteClick: (Kandang) -> Unit ={}
 ){
     Card (
         modifier = modifier,
@@ -199,27 +199,27 @@ fun HwnCard(
                 verticalAlignment = Alignment.CenterVertically
             ){
                 Text(
-                    text = hewan.nama_hewan,
+                    text = kandang.id_kandang,
                     style = MaterialTheme.typography.titleLarge
                 )
                 Spacer(Modifier.weight(1f))
-                IconButton(onClick =  { onDeleteClick(hewan)}) {
+                IconButton(onClick =  { onDeleteClick(kandang)}) {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = null,
                     )
                 }
                 Text(
-                    text = hewan.id_hewan,
+                    text = kandang.id_hewan,
                     style = MaterialTheme.typography.titleMedium
                 )
             }
             Text(
-                text = hewan.tipe_pakan,
+                text = kandang.kapasitas.toString(),
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
-                text = hewan.zona_wilayah,
+                text = kandang.lokasi,
                 style = MaterialTheme.typography.titleMedium
             )
         }

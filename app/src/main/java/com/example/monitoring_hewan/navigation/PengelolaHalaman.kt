@@ -8,32 +8,55 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.monitoring_hewan.view.DestinasiHOME
+import com.example.monitoring_hewan.view.Home
 import com.example.monitoring_hewan.view.hewanview.DestinasiDetailHewan
 import com.example.monitoring_hewan.view.hewanview.DestinasiEntryHewan
 import com.example.monitoring_hewan.view.hewanview.DestinasiHomeHewan
 import com.example.monitoring_hewan.view.hewanview.DestinasiUpdateHewan
-import com.example.monitoring_hewan.view.hewanview.DetailScreen
-import com.example.monitoring_hewan.view.hewanview.EntryHwnScreen
-import com.example.monitoring_hewan.view.hewanview.HomeScreen
-import com.example.monitoring_hewan.view.hewanview.UpdateScreen
+import com.example.monitoring_hewan.view.hewanview.DetailScreenHewan
+import com.example.monitoring_hewan.view.hewanview.EntryScreenHewan
+import com.example.monitoring_hewan.view.hewanview.HomeScreenHewan
+import com.example.monitoring_hewan.view.hewanview.UpdateScreenHewan
+import com.example.monitoring_hewan.view.kandangview.DestinasiDetailKandang
+import com.example.monitoring_hewan.view.kandangview.DestinasiEntryKandang
+import com.example.monitoring_hewan.view.kandangview.DestinasiHomeKandang
+import com.example.monitoring_hewan.view.kandangview.DestinasiUpdateKandang
+import com.example.monitoring_hewan.view.kandangview.DetailScreenKandang
+import com.example.monitoring_hewan.view.kandangview.EntryScreenKandang
+import com.example.monitoring_hewan.view.kandangview.HomeScreenKandang
+import com.example.monitoring_hewan.view.kandangview.UpdateScreenKandang
 
 @Composable
 fun PengelolaHalaman(navController: NavHostController = rememberNavController()){
     NavHost(
         navController=navController,
-        startDestination = DestinasiHomeHewan.route,
+        startDestination = DestinasiHOME.route,
         modifier = Modifier,
     ){
+        composable(
+            route = DestinasiHOME.route
+        ) {
+            Home (onButtonClickKdg = {
+                navController.navigate(DestinasiHomeKandang.route)
+            },
+                onButtonClickHwn = {
+                    navController.navigate(DestinasiHomeHewan.route)
+                } )
+        }
         composable(DestinasiHomeHewan.route){
-            HomeScreen(
+            HomeScreenHewan(
                 navigateToItemEntry = {navController.navigate(DestinasiEntryHewan.route)},
                 onDetailClick = { id_hewan ->
                     navController.navigate("${DestinasiDetailHewan.route}/$id_hewan")
-                }
+                },
+                navigateBack = {
+                    navController.popBackStack()
+                },
             )
         }
         composable(DestinasiEntryHewan.route){
-            EntryHwnScreen(navigateBack = {
+            EntryScreenHewan(navigateBack = {
                 navController.navigate(DestinasiHomeHewan.route){
                     popUpTo(DestinasiHomeHewan.route){
                         inclusive = true
@@ -46,7 +69,7 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
         ){
             val id_hewan = it.arguments?.getString(DestinasiDetailHewan.ID_HEWAN)
             id_hewan?.let { id_hewan ->
-                DetailScreen(
+                DetailScreenHewan(
                     navigateToItemUpdate = { navController.navigate("${DestinasiUpdateHewan.route}/$id_hewan") },
                     navigateBack = { navController.navigate(DestinasiHomeHewan.route) {
                         popUpTo(DestinasiHomeHewan.route) { inclusive = true }
@@ -60,7 +83,52 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
         ){
             val id_hewan = it.arguments?.getString(DestinasiUpdateHewan.ID_HEWAN)
             id_hewan?.let { id_hewan ->
-                UpdateScreen(
+                UpdateScreenHewan(
+                    onBack = { navController.popBackStack() },
+                    onNavigate = { navController.popBackStack() }
+                )
+            }
+        }
+        composable(DestinasiHomeKandang.route){
+            HomeScreenKandang(
+                navigateToItemEntry = {navController.navigate(DestinasiEntryKandang.route)},
+                onDetailClick = { id_kandang ->
+                    navController.navigate("${DestinasiDetailKandang.route}/$id_kandang")
+                },
+                navigateBack = {
+                    navController.popBackStack()
+                },
+            )
+        }
+        composable(DestinasiEntryKandang.route){
+            EntryScreenKandang(navigateBack = {
+                navController.navigate(DestinasiHomeKandang.route){
+                    popUpTo(DestinasiHomeKandang.route){
+                        inclusive = true
+                    }
+                }
+            })
+        }
+        composable(DestinasiDetailKandang.routesWithArg, arguments = listOf(navArgument(DestinasiDetailKandang.ID_KANDANG) {
+            type = NavType.StringType })
+        ){
+            val id_kandang = it.arguments?.getString(DestinasiDetailKandang.ID_KANDANG)
+            id_kandang?.let { id_kandang ->
+                DetailScreenKandang(
+                    navigateToItemUpdate = { navController.navigate("${DestinasiUpdateKandang.route}/$id_kandang") },
+                    navigateBack = { navController.navigate(DestinasiHomeKandang.route) {
+                        popUpTo(DestinasiHomeKandang.route) { inclusive = true }
+                    }
+                    }
+                )
+            }
+        }
+        composable(DestinasiUpdateKandang.routesWithArg, arguments = listOf(navArgument(DestinasiDetailKandang.ID_KANDANG){
+            type = NavType.StringType })
+        ){
+            val id_kandang = it.arguments?.getString(DestinasiUpdateKandang.ID_KANDANG)
+            id_kandang?.let { id_kandang ->
+                UpdateScreenKandang(
                     onBack = { navController.popBackStack() },
                     onNavigate = { navController.popBackStack() }
                 )

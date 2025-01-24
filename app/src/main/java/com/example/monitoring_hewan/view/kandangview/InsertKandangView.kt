@@ -1,4 +1,4 @@
-package com.example.monitoring_hewan.view.hewanview
+package com.example.monitoring_hewan.view.kandangview
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,22 +36,22 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.monitoring_hewan.customwidget.CostumeTopAppBar
 import com.example.monitoring_hewan.navigation.DestinasiNavigasi
 import com.example.monitoring_hewan.viewmodel.PenyediaViewModel
-import com.example.monitoring_hewan.viewmodel.hewanvm.InsertHewanViewModel
-import com.example.monitoring_hewan.viewmodel.hewanvm.InsertUiEvent
-import com.example.monitoring_hewan.viewmodel.hewanvm.InsertUiState
+import com.example.monitoring_hewan.viewmodel.kandangvm.InsertKandangViewModel
+import com.example.monitoring_hewan.viewmodel.kandangvm.InsertUiEvent
+import com.example.monitoring_hewan.viewmodel.kandangvm.InsertUiState
 import kotlinx.coroutines.launch
 
-object DestinasiEntryHewan: DestinasiNavigasi {
-    override val route ="entryhewan"
-    override val titleRes = "Insert Hewan"
+object DestinasiEntryKandang: DestinasiNavigasi {
+    override val route ="entrykandang"
+    override val titleRes = "Insert Kandang"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EntryScreenHewan(
+fun EntryScreenKandang(
     navigateBack: ()-> Unit,
     modifier: Modifier = Modifier,
-    viewModel: InsertHewanViewModel= viewModel(factory = PenyediaViewModel.Factory)
+    viewModel: InsertKandangViewModel= viewModel(factory = PenyediaViewModel.Factory)
 ){
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -59,7 +59,7 @@ fun EntryScreenHewan(
         modifier=modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             CostumeTopAppBar(
-                title = DestinasiEntryHewan.titleRes,
+                title = DestinasiEntryKandang.titleRes,
                 canNavigateBack = true,
                 scrollBehavior = scrollBehavior,
                 navigateUp = navigateBack
@@ -68,10 +68,10 @@ fun EntryScreenHewan(
     ){ innerPadding ->
         EntryBody(
             insertUiState = viewModel.uiState,
-            onSiswaValueChange = viewModel::updateInsertHwnState,
+            onSiswaValueChange = viewModel::updateInsertKdgState,
             onSaveClick = {
                 coroutineScope.launch {
-                    viewModel.insertHwn()
+                    viewModel.insertKdg()
                     navigateBack()
                 }
             },
@@ -115,20 +115,18 @@ fun FormInput(
     insertUiEvent: InsertUiEvent,
     modifier: Modifier = Modifier,
     onValueChange: (InsertUiEvent)->Unit={},
-    enabled: Boolean = true
+    enabled: Boolean = true,
+
 ) {
-    var chosenDropdown = listOf("Herbivora", "Karnivora", "Omnivora")
-    var expanded by remember { mutableStateOf(false) }
-    var selectedItem by remember { mutableStateOf("") }
 
     Column (
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ){
         OutlinedTextField(
-            value = insertUiEvent.nama_hewan,
-            onValueChange = {onValueChange(insertUiEvent.copy(nama_hewan = it))},
-            label = { Text("Nama Hewan") },
+            value = insertUiEvent.id_kandang,
+            onValueChange = {onValueChange(insertUiEvent.copy(id_kandang = it))},
+            label = { Text("ID Kandang") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true
@@ -141,53 +139,28 @@ fun FormInput(
             enabled = enabled,
             singleLine = true
         )
-        Text(text = "Tipe Pakan")
-
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { expanded = !expanded }
-        ) {
-            OutlinedTextField(
-                value = selectedItem,
-                onValueChange = { },
-                label = { Text("Jenis Hewan") },
-                trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-                },
-                modifier = Modifier.menuAnchor().fillMaxWidth(),
-                readOnly = true,
-                placeholder = { Text("Pilih Jenis") },
-                enabled = enabled
-            )
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                chosenDropdown.forEach { item ->
-                    DropdownMenuItem(
-                        onClick = {
-                            selectedItem = item
-                            expanded = false
-                            onValueChange(insertUiEvent.copy(tipe_pakan = item))
-                        },
-                        text = { Text(text = item) }
-                    )
-                }
-            }
-        }
-
         OutlinedTextField(
-            value = insertUiEvent.populasi,
-            onValueChange = {onValueChange(insertUiEvent.copy(populasi = it))},
+            value = if (insertUiEvent.kapasitas == 0) "" else insertUiEvent.kapasitas.toString(),
+            onValueChange = {
+                if (it.isEmpty()) {
+                    onValueChange(insertUiEvent.copy(kapasitas = 0))
+                } else {
+                    val kapasitas = it.toIntOrNull()
+                    if (kapasitas != null) {
+                        onValueChange(insertUiEvent.copy(kapasitas = kapasitas))
+                    }
+                }
+            },
             label = { Text("Populasi") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true
         )
+
         OutlinedTextField(
-            value = insertUiEvent.zona_wilayah,
-            onValueChange = {onValueChange(insertUiEvent.copy(zona_wilayah = it))},
-            label = { Text("Zona Wilayah") },
+            value = insertUiEvent.lokasi,
+            onValueChange = {onValueChange(insertUiEvent.copy(lokasi = it))},
+            label = { Text("Lokasi") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true

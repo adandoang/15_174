@@ -5,28 +5,53 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.monitoring_hewan.model.Hewan
 import com.example.monitoring_hewan.model.Kandang
+import com.example.monitoring_hewan.repository.HewanRepository
 import com.example.monitoring_hewan.repository.KandangRepository
 import kotlinx.coroutines.launch
 
-class InsertKandangViewModel (private val kdg: KandangRepository): ViewModel() {
+class InsertKandangViewModel(private val kdg: KandangRepository, private val hwn: HewanRepository) : ViewModel() {
     var uiState by mutableStateOf(InsertUiState())
         private set
 
-    fun updateInsertKdgState(insertUiEvent:InsertUiEvent) {
+    var hewanList by mutableStateOf(emptyList<Hewan>())
+        private set
+
+    init {
+        loadHewanList()
+    }
+
+    private fun loadHewanList() {
+        viewModelScope.launch {
+            try {
+                val response = hwn.getHewan()
+                if (response.status) {
+                    hewanList = response.data
+                } else {
+                    println("Failed to load animals: ${response.message}")
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun updateInsertKdgState(insertUiEvent: InsertUiEvent) {
         uiState = InsertUiState(insertUiEvent = insertUiEvent)
     }
 
     suspend fun insertKdg() {
-        viewModelScope.launch{
+        viewModelScope.launch {
             try {
                 kdg.insertKandang(uiState.insertUiEvent.toKdg())
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 }
+
 
 data class InsertUiState(
     val insertUiEvent: InsertUiEvent = InsertUiEvent()

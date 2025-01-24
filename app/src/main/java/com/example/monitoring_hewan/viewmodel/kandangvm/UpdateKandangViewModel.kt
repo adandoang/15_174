@@ -7,6 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.monitoring_hewan.repository.KandangRepository
+import com.example.monitoring_hewan.view.kandangview.DestinasiUpdateKandang
 import kotlinx.coroutines.launch
 
 class UpdateKandangViewModel (
