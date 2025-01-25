@@ -140,7 +140,7 @@ fun ItemDetailHwn(
             Divider(modifier = Modifier.padding(vertical = 8.dp))
             ComponentDetailHwn(judul = "Tipe Pakan", isinya = hewan.tipe_pakan)
             Divider(modifier = Modifier.padding(vertical = 8.dp))
-            ComponentDetailHwn(judul = "Populasi", isinya = hewan.populasi)
+            ComponentDetailHwn(judul = "Populasi", isinya = hewan.populasi.toString())
             Divider(modifier = Modifier.padding(vertical = 8.dp))
             ComponentDetailHwn(judul = "Zona Wilayah", isinya = hewan.zona_wilayah)
 

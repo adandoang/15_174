@@ -5,12 +5,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -39,126 +45,172 @@ fun Home(
     onButtonClickHwn: () -> Unit,
     onButtonClickKdg: () -> Unit,
     onButtonClickPtgs: () -> Unit,
+    onButtonClickMtr: () -> Unit,
 
     ) {
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize() // Mengisi seluruh layar
+            .padding(10.dp),
+        contentAlignment = Alignment.Center // Memusatkan konten secara vertikal dan horizontal
     ) {
-        Image(
-            painter = painterResource(R.drawable.ic_connection_error),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
-        )
-        Column(
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2), // 2 kolom untuk grid
             modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .padding(26.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .wrapContentSize() // Ukuran grid mengikuti konten
+                .padding(10.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp), // Jarak horizontal antar item
+            verticalArrangement = Arrangement.spacedBy(10.dp) // Jarak vertikal antar item
         ) {
-            Card(
-                modifier = Modifier
-                    .background(Color.Gray, RoundedCornerShape(16.dp))
-            ) {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
+            // Item 1: Kandang
+            item {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1f) // Membuat persegi
+                        .background(Color.Gray, RoundedCornerShape(16.dp))
                 ) {
-                    Text(
-                        text = "Kandang",
-                        color = colorResource(id = R.color.purple_700),
-                        fontSize = 40.sp,
-                        modifier = Modifier.padding(5.dp),
-                        fontWeight = FontWeight.Bold
-                    )
-                    Image(
-                        painter = painterResource(R.drawable.ic_launcher_foreground),
-                        contentDescription = "",
-                        modifier = Modifier.size(100.dp),
-                    )
-                    Spacer(modifier = Modifier.padding(5.dp))
-                    Button(
-                        onClick = onButtonClickKdg,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                            .padding(5.dp)
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(text = "Go to Kandang Page")
+                        Text(
+                            text = "Kandang",
+                            color = colorResource(id = R.color.purple_700),
+                            fontSize = 20.sp,
+                            modifier = Modifier.padding(5.dp),
+                            fontWeight = FontWeight.Bold
+                        )
+                        Image(
+                            painter = painterResource(R.drawable.ic_launcher_foreground),
+                            contentDescription = "",
+                            modifier = Modifier.size(100.dp)
+                        )
+                        Spacer(modifier = Modifier.padding(5.dp))
+                        Button(
+                            onClick = onButtonClickKdg,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(5.dp)
+                        ) {
+                            Text(text = "Go to Kandang Page")
+                        }
                     }
                 }
             }
-            Spacer(modifier = Modifier.padding(20.dp))
 
-            Card(
-                modifier = Modifier
-                    .background(Color.Gray, RoundedCornerShape(16.dp)),
-            ) {
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
+            // Item 2: Hewan
+            item {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1f)
+                        .background(Color.Gray, RoundedCornerShape(16.dp))
                 ) {
-                    Text(
-                        color = colorResource(id = R.color.purple_700),
-                        text = "Hewan",
-                        fontSize = 40.sp,
-                        modifier = Modifier.padding(5.dp),
-                        fontWeight = FontWeight.Bold
-                    )
-                    Image(
-                        painter = painterResource(R.drawable.loading_img),
-                        contentDescription = "",
-                        modifier = Modifier.size(100.dp)
-                    )
-                    Spacer(modifier = Modifier.padding(5.dp))
-                    Button(
-                        onClick = onButtonClickHwn,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                            .padding(5.dp)
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(text = "Go to Hewan Page")
+                        Text(
+                            text = "Hewan",
+                            color = colorResource(id = R.color.purple_700),
+                            fontSize = 20.sp,
+                            modifier = Modifier.padding(5.dp),
+                            fontWeight = FontWeight.Bold
+                        )
+                        Image(
+                            painter = painterResource(R.drawable.loading_img),
+                            contentDescription = "",
+                            modifier = Modifier.size(100.dp)
+                        )
+                        Spacer(modifier = Modifier.padding(5.dp))
+                        Button(
+                            onClick = onButtonClickHwn,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(5.dp)
+                        ) {
+                            Text(text = "Go to Hewan Page")
+                        }
                     }
                 }
             }
-            Spacer(modifier = Modifier.padding(20.dp))
 
-            Card(
-                modifier = Modifier
-                    .background(Color.Gray, RoundedCornerShape(16.dp)),
-            ) {
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
+            // Item 3: Petugas
+            item {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1f)
+                        .background(Color.Gray, RoundedCornerShape(16.dp))
                 ) {
-                    Text(
-                        color = colorResource(id = R.color.purple_700),
-                        text = "Petugas",
-                        fontSize = 40.sp,
-                        modifier = Modifier.padding(5.dp),
-                        fontWeight = FontWeight.Bold
-                    )
-                    Image(
-                        painter = painterResource(R.drawable.loading_img),
-                        contentDescription = "",
-                        modifier = Modifier.size(100.dp)
-                    )
-                    Spacer(modifier = Modifier.padding(5.dp))
-                    Button(
-                        onClick = onButtonClickPtgs,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                            .padding(5.dp)
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(text = "Go to Petugas Page")
+                        Text(
+                            text = "Petugas",
+                            color = colorResource(id = R.color.purple_700),
+                            fontSize = 20.sp,
+                            modifier = Modifier.padding(5.dp),
+                            fontWeight = FontWeight.Bold
+                        )
+                        Image(
+                            painter = painterResource(R.drawable.loading_img),
+                            contentDescription = "",
+                            modifier = Modifier.size(100.dp)
+                        )
+                        Spacer(modifier = Modifier.padding(5.dp))
+                        Button(
+                            onClick = onButtonClickPtgs,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(5.dp)
+                        ) {
+                            Text(text = "Go to Petugas Page")
+                        }
+                    }
+                }
+            }
+
+            // Item 4: Monitoring
+            item {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1f)
+                        .background(Color.Gray, RoundedCornerShape(16.dp))
+                ) {
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "Monitoring",
+                            color = colorResource(id = R.color.purple_700),
+                            fontSize = 20.sp,
+                            modifier = Modifier.padding(5.dp),
+                            fontWeight = FontWeight.Bold
+                        )
+                        Image(
+                            painter = painterResource(R.drawable.loading_img),
+                            contentDescription = "",
+                            modifier = Modifier.size(100.dp)
+                        )
+                        Spacer(modifier = Modifier.padding(5.dp))
+                        Button(
+                            onClick = onButtonClickMtr,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(5.dp)
+                        ) {
+                            Text(text = "Go to Monitoring Page")
+                        }
                     }
                 }
             }
         }
     }
+
+
 }
