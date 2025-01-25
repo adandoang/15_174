@@ -14,6 +14,10 @@ import com.example.monitoring_hewan.viewmodel.kandangvm.DetailKandangViewModel
 import com.example.monitoring_hewan.viewmodel.kandangvm.HomeKandangViewModel
 import com.example.monitoring_hewan.viewmodel.kandangvm.InsertKandangViewModel
 import com.example.monitoring_hewan.viewmodel.kandangvm.UpdateKandangViewModel
+import com.example.monitoring_hewan.viewmodel.monitoringvm.DetailMonitoringViewModel
+import com.example.monitoring_hewan.viewmodel.monitoringvm.HomeMonitoringViewModel
+import com.example.monitoring_hewan.viewmodel.monitoringvm.InsertMonitoringViewModel
+import com.example.monitoring_hewan.viewmodel.monitoringvm.UpdateMonitoringViewModel
 import com.example.monitoring_hewan.viewmodel.petugasvm.DetailPetugasViewModel
 import com.example.monitoring_hewan.viewmodel.petugasvm.HomePetugasViewModel
 import com.example.monitoring_hewan.viewmodel.petugasvm.InsertPetugasViewModel
@@ -35,6 +39,11 @@ object PenyediaViewModel{
         initializer { InsertPetugasViewModel(aplikasi().container.petugasRepository) }
         initializer { DetailPetugasViewModel(createSavedStateHandle(),aplikasi().container.petugasRepository) }
         initializer { UpdatePetugasViewModel(createSavedStateHandle(),aplikasi().container.petugasRepository) }
+
+        initializer { HomeMonitoringViewModel(aplikasi().container.monitoringRepository) }
+        initializer { InsertMonitoringViewModel(aplikasi().container.monitoringRepository) }
+        initializer { DetailMonitoringViewModel(createSavedStateHandle(),aplikasi().container.monitoringRepository) }
+        initializer { UpdateMonitoringViewModel(createSavedStateHandle(),aplikasi().container.monitoringRepository) }
     }
     fun CreationExtras.aplikasi(): Applications =
         (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY]as Applications)

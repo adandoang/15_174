@@ -7,6 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.monitoring_hewan.repository.MonitoringRepository
+import com.example.monitoring_hewan.view.MonitoringView.DestinasiUpdateMonitoring
 import kotlinx.coroutines.launch
 
 class UpdateMonitoringViewModel (
