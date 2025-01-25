@@ -10,7 +10,7 @@ import com.example.monitoring_hewan.repository.MonitoringRepository
 import kotlinx.coroutines.launch
 import kotlin.math.tan
 
-class InsertMonitoringiewModel (private val mtr: MonitoringRepository): ViewModel() {
+class InsertMonitoringViewModel (private val mtr: MonitoringRepository): ViewModel() {
     var uiState by mutableStateOf(InsertUiState())
         private set
 

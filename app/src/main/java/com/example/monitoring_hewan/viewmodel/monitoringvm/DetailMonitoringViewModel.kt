@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.monitoring_hewan.model.Monitoring
 import com.example.monitoring_hewan.repository.MonitoringRepository
+import com.example.monitoring_hewan.view.MonitoringView.DestinasiDetailMonitoring
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -20,7 +21,7 @@ sealed class DetailUiState {
 
 class DetailMonitoringViewModel(
     savedStateHandle: SavedStateHandle,
-    private val kdg: MonitoringRepository
+    private val mtr: MonitoringRepository
 ) : ViewModel() {
 
     var monitoringDetailState: DetailUiState by mutableStateOf(DetailUiState.Loading)
@@ -36,7 +37,7 @@ class DetailMonitoringViewModel(
         viewModelScope.launch {
             monitoringDetailState = DetailUiState.Loading
             monitoringDetailState = try {
-                val monitoring = kdg.getMonitoringByid_monitoring(_id_monitoring)
+                val monitoring = mtr.getMonitoringByid_monitoring(_id_monitoring)
                 DetailUiState.Success(monitoring)
             } catch (e: IOException) {
                 DetailUiState.Error
@@ -46,10 +47,10 @@ class DetailMonitoringViewModel(
         }
     }
 
-    fun deleteKdg(id_monitoring:String) {
+    fun deleteMtr(id_monitoring:String) {
         viewModelScope.launch {
             try {
-                kdg.deleteMonitoring(id_monitoring)
+                mtr.deleteMonitoring(id_monitoring)
             }catch (e:IOException){
                 HomeUiState.Error
             }catch (e: HttpException){
