@@ -10,6 +10,14 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.monitoring_hewan.view.DestinasiHOME
 import com.example.monitoring_hewan.view.Home
+import com.example.monitoring_hewan.view.MonitoringView.DestinasiDetailMonitoring
+import com.example.monitoring_hewan.view.MonitoringView.DestinasiEntryMonitoring
+import com.example.monitoring_hewan.view.MonitoringView.DestinasiHomeMonitoring
+import com.example.monitoring_hewan.view.MonitoringView.DestinasiUpdateMonitoring
+import com.example.monitoring_hewan.view.MonitoringView.DetailScreenMonitoring
+import com.example.monitoring_hewan.view.MonitoringView.EntryScreenMonitoring
+import com.example.monitoring_hewan.view.MonitoringView.HomeScreenMonitoring
+import com.example.monitoring_hewan.view.MonitoringView.UpdateScreenMonitoring
 import com.example.monitoring_hewan.view.hewanview.DestinasiDetailHewan
 import com.example.monitoring_hewan.view.hewanview.DestinasiEntryHewan
 import com.example.monitoring_hewan.view.hewanview.DestinasiHomeHewan
@@ -54,6 +62,9 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
                 },
                 onButtonClickPtgs = {
                     navController.navigate(DestinasiHomePetugas.route)
+                },
+                onButtonClickMtr = {
+                    navController.navigate(DestinasiHomeMonitoring.route)
                 }
             )
         }
@@ -148,7 +159,6 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
             }
         }
 
-
         composable(DestinasiHomePetugas.route){
             HomeScreenPetugas(
                 navigateToItemEntry = {navController.navigate(DestinasiEntryPetugas.route)},
@@ -189,6 +199,53 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
             val id_petugas = it.arguments?.getString(DestinasiUpdatePetugas.ID_PETUGAS)
             id_petugas?.let { id_petugas ->
                 UpdateScreenPetugas(
+                    onBack = { navController.popBackStack() },
+                    onNavigate = { navController.popBackStack() }
+                )
+            }
+        }
+
+
+        composable(DestinasiHomeMonitoring.route){
+            HomeScreenMonitoring(
+                navigateToItemEntry = {navController.navigate(DestinasiEntryMonitoring.route)},
+                onDetailClick = { id_monitoring ->
+                    navController.navigate("${DestinasiDetailMonitoring.route}/$id_monitoring")
+                },
+                navigateBack = {
+                    navController.popBackStack()
+                },
+            )
+        }
+        composable(DestinasiEntryMonitoring.route){
+            EntryScreenMonitoring(navigateBack = {
+                navController.navigate(DestinasiHomeMonitoring.route){
+                    popUpTo(DestinasiHomeMonitoring.route){
+                        inclusive = true
+                    }
+                }
+            })
+        }
+        composable(DestinasiDetailMonitoring.routesWithArg, arguments = listOf(navArgument(DestinasiDetailMonitoring.ID_MONITORING) {
+            type = NavType.StringType })
+        ){
+            val id_monitoring = it.arguments?.getString(DestinasiDetailMonitoring.ID_MONITORING)
+            id_monitoring?.let { id_monitoring ->
+                DetailScreenMonitoring(
+                    navigateToItemUpdate = { navController.navigate("${DestinasiUpdateMonitoring.route}/$id_monitoring") },
+                    navigateBack = { navController.navigate(DestinasiHomeMonitoring.route) {
+                        popUpTo(DestinasiHomeMonitoring.route) { inclusive = true }
+                    }
+                    }
+                )
+            }
+        }
+        composable(DestinasiUpdateMonitoring.routesWithArg, arguments = listOf(navArgument(DestinasiDetailMonitoring.ID_MONITORING){
+            type = NavType.StringType })
+        ){
+            val id_monitoring = it.arguments?.getString(DestinasiUpdateMonitoring.ID_MONITORING)
+            id_monitoring?.let { id_monitoring ->
+                UpdateScreenMonitoring(
                     onBack = { navController.popBackStack() },
                     onNavigate = { navController.popBackStack() }
                 )
