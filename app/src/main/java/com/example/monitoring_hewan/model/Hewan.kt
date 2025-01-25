@@ -7,7 +7,7 @@ data class Hewan (
     val id_hewan: String,
     val nama_hewan: String,
     val tipe_pakan: String,
-    val populasi: String,
+    val populasi: Int,
     val zona_wilayah: String
 )
 

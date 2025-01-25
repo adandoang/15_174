@@ -36,7 +36,7 @@ data class InsertUiEvent(
     val id_hewan: String="",
     val nama_hewan: String="",
     val tipe_pakan: String="",
-    val populasi: String="",
+    val populasi: Int=0,
     val zona_wilayah: String="",
 )
 

@@ -38,6 +38,7 @@ object DestinasiHOME : DestinasiNavigasi {
 fun Home(
     onButtonClickHwn: () -> Unit,
     onButtonClickKdg: () -> Unit,
+    onButtonClickPtgs: () -> Unit,
 
     ) {
     Box(
@@ -57,7 +58,6 @@ fun Home(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Card pertama
             Card(
                 modifier = Modifier
                     .background(Color.Gray, RoundedCornerShape(16.dp))
@@ -77,7 +77,7 @@ fun Home(
                     Image(
                         painter = painterResource(R.drawable.ic_launcher_foreground),
                         contentDescription = "",
-                        modifier = Modifier.size(150.dp),
+                        modifier = Modifier.size(100.dp),
                     )
                     Spacer(modifier = Modifier.padding(5.dp))
                     Button(
@@ -111,7 +111,7 @@ fun Home(
                     Image(
                         painter = painterResource(R.drawable.loading_img),
                         contentDescription = "",
-                        modifier = Modifier.size(150.dp)
+                        modifier = Modifier.size(100.dp)
                     )
                     Spacer(modifier = Modifier.padding(5.dp))
                     Button(
@@ -122,6 +122,40 @@ fun Home(
                             .padding(5.dp)
                     ) {
                         Text(text = "Go to Hewan Page")
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.padding(20.dp))
+
+            Card(
+                modifier = Modifier
+                    .background(Color.Gray, RoundedCornerShape(16.dp)),
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        color = colorResource(id = R.color.purple_700),
+                        text = "Petugas",
+                        fontSize = 40.sp,
+                        modifier = Modifier.padding(5.dp),
+                        fontWeight = FontWeight.Bold
+                    )
+                    Image(
+                        painter = painterResource(R.drawable.loading_img),
+                        contentDescription = "",
+                        modifier = Modifier.size(100.dp)
+                    )
+                    Spacer(modifier = Modifier.padding(5.dp))
+                    Button(
+                        onClick = onButtonClickPtgs,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                            .padding(5.dp)
+                    ) {
+                        Text(text = "Go to Petugas Page")
                     }
                 }
             }

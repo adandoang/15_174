@@ -14,6 +14,10 @@ import com.example.monitoring_hewan.viewmodel.kandangvm.DetailKandangViewModel
 import com.example.monitoring_hewan.viewmodel.kandangvm.HomeKandangViewModel
 import com.example.monitoring_hewan.viewmodel.kandangvm.InsertKandangViewModel
 import com.example.monitoring_hewan.viewmodel.kandangvm.UpdateKandangViewModel
+import com.example.monitoring_hewan.viewmodel.petugasvm.DetailPetugasViewModel
+import com.example.monitoring_hewan.viewmodel.petugasvm.HomePetugasViewModel
+import com.example.monitoring_hewan.viewmodel.petugasvm.InsertPetugasViewModel
+import com.example.monitoring_hewan.viewmodel.petugasvm.UpdatePetugasViewModel
 
 object PenyediaViewModel{
     val Factory = viewModelFactory {
@@ -21,10 +25,16 @@ object PenyediaViewModel{
         initializer { InsertHewanViewModel(aplikasi().container.hewanRepository) }
         initializer { DetailHewanViewModel(createSavedStateHandle(),aplikasi().container.hewanRepository) }
         initializer { UpdateHewanViewModel(createSavedStateHandle(),aplikasi().container.hewanRepository) }
+
         initializer { HomeKandangViewModel(aplikasi().container.kandangRepository) }
         initializer { InsertKandangViewModel(aplikasi().container.kandangRepository, aplikasi().container.hewanRepository) }
         initializer { DetailKandangViewModel(createSavedStateHandle(),aplikasi().container.kandangRepository) }
         initializer { UpdateKandangViewModel(createSavedStateHandle(),aplikasi().container.kandangRepository) }
+
+        initializer { HomePetugasViewModel(aplikasi().container.petugasRepository) }
+        initializer { InsertPetugasViewModel(aplikasi().container.petugasRepository) }
+        initializer { DetailPetugasViewModel(createSavedStateHandle(),aplikasi().container.petugasRepository) }
+        initializer { UpdatePetugasViewModel(createSavedStateHandle(),aplikasi().container.petugasRepository) }
     }
     fun CreationExtras.aplikasi(): Applications =
         (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY]as Applications)

@@ -177,8 +177,17 @@ fun FormInput(
         }
 
         OutlinedTextField(
-            value = insertUiEvent.populasi,
-            onValueChange = {onValueChange(insertUiEvent.copy(populasi = it))},
+            value = if (insertUiEvent.populasi == 0) "" else insertUiEvent.populasi.toString(),
+            onValueChange = {
+                if (it.isEmpty()) {
+                    onValueChange(insertUiEvent.copy(populasi = 0))
+                } else {
+                    val populasi = it.toIntOrNull()
+                    if (populasi != null) {
+                        onValueChange(insertUiEvent.copy(populasi = populasi))
+                    }
+                }
+            },
             label = { Text("Populasi") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,

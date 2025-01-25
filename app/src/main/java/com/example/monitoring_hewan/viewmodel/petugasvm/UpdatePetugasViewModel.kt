@@ -7,6 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.monitoring_hewan.repository.PetugasRepository
+import com.example.monitoring_hewan.view.petugasview.DestinasiUpdatePetugas
 import kotlinx.coroutines.launch
 
 class UpdatePetugasViewModel (

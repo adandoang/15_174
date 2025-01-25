@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.monitoring_hewan.model.Petugas
 import com.example.monitoring_hewan.repository.PetugasRepository
+import com.example.monitoring_hewan.view.petugasview.DestinasiDetailPetugas
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
