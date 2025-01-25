@@ -2,12 +2,15 @@ package com.example.monitoring_hewan.dependenciesinjection
 
 import com.example.monitoring_hewan.repository.HewanRepository
 import com.example.monitoring_hewan.repository.KandangRepository
+import com.example.monitoring_hewan.repository.MonitoringRepository
 import com.example.monitoring_hewan.repository.NetworkHewanRepository
 import com.example.monitoring_hewan.repository.NetworkKandangRepository
+import com.example.monitoring_hewan.repository.NetworkMonitoringRepository
 import com.example.monitoring_hewan.repository.NetworkPetugasRepository
 import com.example.monitoring_hewan.repository.PetugasRepository
 import com.example.monitoring_hewan.service.HewanService
 import com.example.monitoring_hewan.service.KandangService
+import com.example.monitoring_hewan.service.MonitoringService
 import com.example.monitoring_hewan.service.PetugasService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
@@ -19,6 +22,7 @@ interface AppContainer{
     val hewanRepository: HewanRepository
     val kandangRepository: KandangRepository
     val petugasRepository: PetugasRepository
+    val monitoringRepository: MonitoringRepository
 }
 
 class Container : AppContainer {
@@ -45,5 +49,11 @@ class Container : AppContainer {
     }
     override val petugasRepository: PetugasRepository by lazy {
         NetworkPetugasRepository(petugasService)
+    }
+    private val monitoringService: MonitoringService by lazy {
+        retrofit.create(MonitoringService::class.java)
+    }
+    override val monitoringRepository: MonitoringRepository by lazy {
+        NetworkMonitoringRepository(monitoringService)
     }
 }

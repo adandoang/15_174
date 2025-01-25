@@ -39,7 +39,7 @@ data class InsertUiEvent(
 )
 
 fun InsertUiEvent.toPtgs(): Petugas = Petugas(
-   id_petugas = id_petugas,
+    id_petugas = id_petugas,
     nama_petugas = nama_petugas,
     jabatan = jabatan,
 )
