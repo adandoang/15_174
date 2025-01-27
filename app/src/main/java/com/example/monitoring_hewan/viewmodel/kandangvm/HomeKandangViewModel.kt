@@ -35,19 +35,15 @@ class HomeKandangViewModel (
         viewModelScope.launch {
             kdgUIState = HomeUiState.Loading
             try {
-                // Ambil data dari KandangRepository
                 val kandangList = kdg.getKandang().data
 
-                // Ambil data dari HewanRepository
                 val hewanList = hwn.getHewan().data
 
-                // Gabungkan data Kandang dengan nama_hewan
                 val kandangWithNamaHewan = kandangList.map { kandang ->
                     val namaHewan = hewanList.find { it.id_hewan == kandang.id_hewan }?.nama_hewan ?: "Unknown"
-                    kandang.copy(nama_hewan = namaHewan) // Menambahkan nama_hewan ke objek Kandang
+                    kandang.copy(nama_hewan = namaHewan)
                 }
 
-                // Update state dengan data gabungan
                 kdgUIState = HomeUiState.Success(kandangWithNamaHewan)
             } catch (e: IOException) {
                 kdgUIState = HomeUiState.Error

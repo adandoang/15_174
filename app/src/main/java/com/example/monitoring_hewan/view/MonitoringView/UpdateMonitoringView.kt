@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.monitoring_hewan.customwidget.CostumeTopAppBar
 import com.example.monitoring_hewan.navigation.DestinasiNavigasi
@@ -35,6 +36,10 @@ fun UpdateScreenMonitoring(
 ){
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val context = LocalContext.current
+
+    viewModel.getKandang()
+    viewModel.getDokterHewanPetugas()
 
     Scaffold (
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -59,7 +64,10 @@ fun UpdateScreenMonitoring(
                         onNavigate()
                     }
                 }
-            }
+            },
+            kandangList = viewModel.kdglist,
+            dokterHewanList = viewModel.petugasList,
+            context = context
         )
     }
 }

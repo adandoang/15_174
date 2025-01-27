@@ -11,6 +11,7 @@ interface KandangRepository {
     suspend fun updateKandang(id_kandang: String, kandang: Kandang)
     suspend fun deleteKandang(id_kandang: String)
     suspend fun getKandangByid_kandang(id_kandang: String): Kandang
+
 }
 
 class NetworkKandangRepository(

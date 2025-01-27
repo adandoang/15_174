@@ -40,11 +40,8 @@ class InsertKandangViewModel(
                 val hwndata = hwn.getHewan()
                 hwnlist = hwndata.data
 
-                // Tambahkan log untuk debugging
-                Log.d("InsertKandangViewModel", "Hewan List Loaded: $hwnlist")
             } catch (e: Exception) {
                 e.printStackTrace()
-                Log.e("InsertKandangViewModel", "Error fetching Hewan: ${e.message}")
             }
         }
     }

@@ -1,5 +1,8 @@
 package com.example.monitoring_hewan.view.MonitoringView
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,6 +22,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,16 +34,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.monitoring_hewan.customwidget.CostumeTopAppBar
+import com.example.monitoring_hewan.model.Kandang
+import com.example.monitoring_hewan.model.Petugas
 import com.example.monitoring_hewan.navigation.DestinasiNavigasi
 import com.example.monitoring_hewan.viewmodel.PenyediaViewModel
 import com.example.monitoring_hewan.viewmodel.monitoringvm.InsertMonitoringViewModel
 import com.example.monitoring_hewan.viewmodel.monitoringvm.InsertUiEvent
 import com.example.monitoring_hewan.viewmodel.monitoringvm.InsertUiState
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 object DestinasiEntryMonitoring: DestinasiNavigasi {
     override val route ="entrymonitoring"
@@ -51,10 +61,15 @@ object DestinasiEntryMonitoring: DestinasiNavigasi {
 fun EntryScreenMonitoring(
     navigateBack: ()-> Unit,
     modifier: Modifier = Modifier,
-    viewModel: InsertMonitoringViewModel = viewModel(factory = PenyediaViewModel.Factory)
+    viewModel: InsertMonitoringViewModel = viewModel(factory = PenyediaViewModel.Factory),
 ){
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val context = LocalContext.current
+
+    viewModel.getKandang()
+    viewModel.getDokterHewanPetugas()
+
     Scaffold (
         modifier=modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
@@ -78,7 +93,10 @@ fun EntryScreenMonitoring(
             modifier = Modifier
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            kandangList = viewModel.kdglist,
+            dokterHewanList = viewModel.dokterHewanPetugas,
+            context = context
         )
     }
 }
@@ -88,7 +106,10 @@ fun EntryBody(
     insertUiState: InsertUiState,
     onSiswaValueChange: (InsertUiEvent)->Unit,
     onSaveClick: ()->Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    kandangList: List<Kandang>,
+    dokterHewanList: List<Petugas>,
+    context: Context
 ){
     Column (
         verticalArrangement = Arrangement.spacedBy(18.dp),
@@ -97,7 +118,10 @@ fun EntryBody(
         FormInput(
             insertUiEvent = insertUiState.insertUiEvent,
             onValueChange = onSiswaValueChange,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            kandangList = kandangList,
+            dokterHewanList = dokterHewanList,
+            context = context
         )
         Button(
             onClick = onSaveClick,
@@ -116,8 +140,18 @@ fun FormInput(
     modifier: Modifier = Modifier,
     onValueChange: (InsertUiEvent)->Unit={},
     enabled: Boolean = true,
+    kandangList: List<Kandang>,
+    dokterHewanList: List<Petugas>,
+    context: Context
 
     ) {
+
+    var expanded by remember { mutableStateOf(false) }
+    var selectedKandang by remember { mutableStateOf("") }
+    var expandedPetugas by remember { mutableStateOf(false) }
+    var selectedPetugas by remember { mutableStateOf("") }
+    var showDateTimePicker by remember { mutableStateOf(false) }
+
 
     Column (
         modifier = modifier,
@@ -131,30 +165,87 @@ fun FormInput(
             enabled = enabled,
             singleLine = true
         )
-        OutlinedTextField(
-            value = insertUiEvent.id_petugas,
-            onValueChange = {onValueChange(insertUiEvent.copy(id_petugas = it))},
-            label = { Text("ID Petugas") },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
-            singleLine = true
-        )
-        OutlinedTextField(
-            value = insertUiEvent.id_kandang,
-            onValueChange = {onValueChange(insertUiEvent.copy(id_kandang = it))},
-            label = { Text("ID Kandang") },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
-            singleLine = true
-        )
+        ExposedDropdownMenuBox(
+            expanded = expandedPetugas,
+            onExpandedChange = { expandedPetugas = !expandedPetugas },
+        ) {
+            OutlinedTextField(
+                value = selectedPetugas,
+                onValueChange = {},
+                readOnly = true,
+                label = { Text("ID Petugas - Nama Petugas") },
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedPetugas) },
+                modifier = Modifier.menuAnchor().fillMaxWidth(),
+            )
+
+            ExposedDropdownMenu(
+                expanded = expandedPetugas,
+                onDismissRequest = { expandedPetugas = false },
+            ) {
+                dokterHewanList.forEach { petugas ->
+                    DropdownMenuItem(
+                        text = { Text("${petugas.id_petugas} - ${petugas.nama_petugas}") },
+                        onClick = {
+                            selectedPetugas = petugas.nama_petugas
+                            onValueChange(insertUiEvent.copy(id_petugas = petugas.id_petugas))
+                            expandedPetugas = false
+                        },
+                    )
+                }
+            }
+        }
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = !expanded },
+        ) {
+            OutlinedTextField(
+                value = selectedKandang,
+                onValueChange = {},
+                readOnly = true,
+                label = { Text("ID Kandang - Nama Hewan") },
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                modifier = Modifier.menuAnchor().fillMaxWidth(),
+            )
+
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+            ) {
+                kandangList.forEach { kandang ->
+                    DropdownMenuItem(
+                        text = { Text("${kandang.id_kandang} - ${kandang.nama_hewan}") },
+                        onClick = {
+                            selectedKandang = kandang.id_kandang
+                            onValueChange(insertUiEvent.copy(id_kandang = kandang.id_kandang))
+                            expanded = false
+                        },
+                    )
+                }
+            }
+
+        }
         OutlinedTextField(
             value = insertUiEvent.tanggal_monitoring,
-            onValueChange = {onValueChange(insertUiEvent.copy(tanggal_monitoring = it))},
+            onValueChange = {},
             label = { Text("Tanggal Monitoring") },
             modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
-            singleLine = true
+            enabled = false, // Non-editable manually
+            singleLine = true,
+            trailingIcon = {
+                TextButton(onClick = { showDateTimePicker = true }) {
+                    Text("Pilih")
+                }
+            }
         )
+
+        // DateTime Picker Dialog
+        if (showDateTimePicker) {
+            DateTimePickerDialog(context) { selectedDateTime ->
+                onValueChange(insertUiEvent.copy(tanggal_monitoring = selectedDateTime))
+                showDateTimePicker = false
+            }
+        }
+
         OutlinedTextField(
             value = if (insertUiEvent.hewan_sakit == 0) "" else insertUiEvent.hewan_sakit.toString(),
             onValueChange = {
@@ -172,6 +263,7 @@ fun FormInput(
             enabled = enabled,
             singleLine = true
         )
+
         OutlinedTextField(
             value = if (insertUiEvent.hewan_sehat == 0) "" else insertUiEvent.hewan_sehat.toString(),
             onValueChange = {
@@ -189,12 +281,13 @@ fun FormInput(
             enabled = enabled,
             singleLine = true
         )
+
         OutlinedTextField(
             value = insertUiEvent.status,
-            onValueChange = {onValueChange(insertUiEvent.copy(status = it))},
+            onValueChange = {},
             label = { Text("Status") },
             modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
+            enabled = false,
             singleLine = true
         )
 
@@ -209,4 +302,34 @@ fun FormInput(
             modifier = Modifier.padding(12.dp)
         )
     }
+}
+
+@Composable
+fun DateTimePickerDialog(context: Context, onDateTimeSelected: (String) -> Unit) {
+    val calendar = Calendar.getInstance()
+
+    DatePickerDialog(
+        context,
+        { _, year, month, dayOfMonth ->
+            calendar.set(Calendar.YEAR, year)
+            calendar.set(Calendar.MONTH, month)
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+            TimePickerDialog(
+                context,
+                { _, hourOfDay, minute ->
+                    calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                    calendar.set(Calendar.MINUTE, minute)
+                    val format = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+                    onDateTimeSelected(format.format(calendar.time))
+                },
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE),
+                true
+            ).show()
+        },
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
+    ).show()
 }

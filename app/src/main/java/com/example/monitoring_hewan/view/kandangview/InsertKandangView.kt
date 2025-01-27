@@ -99,7 +99,6 @@ fun EntryBody(
     hewanList: List<Hewan>
 
 
-
 ){
     Column (
         verticalArrangement = Arrangement.spacedBy(18.dp),
@@ -189,7 +188,7 @@ fun FormInput(
                     }
                 }
             },
-            label = { Text("Populasi") },
+            label = { Text("Kapasitas") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true

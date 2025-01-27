@@ -31,6 +31,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -180,37 +181,49 @@ fun HwnLayout(
 fun HwnCard(
     hewan: Hewan,
     modifier: Modifier = Modifier,
-){
-    Card (
+) {
+    val backgroundColor = when (hewan.tipe_pakan.lowercase()) {
+        "karnivora" -> MaterialTheme.colorScheme.error
+        "herbivora" -> Color(0xFF4CAF50)// Hijau
+        "omnivora" -> MaterialTheme.colorScheme.primary
+        else -> MaterialTheme.colorScheme.surface
+    }
+
+    Card(
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
-    ){
-        Column (
+        colors = CardDefaults.cardColors(containerColor = backgroundColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+    ) {
+        Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
-        ){
-            Row (
+        ) {
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ){
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 Text(
                     text = hewan.nama_hewan,
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color.White
                 )
                 Spacer(Modifier.weight(1f))
                 Text(
                     text = hewan.id_hewan,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
+                    color = Color.White
                 )
             }
             Text(
                 text = hewan.tipe_pakan,
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.White
             )
             Text(
                 text = hewan.zona_wilayah,
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.White
             )
         }
     }

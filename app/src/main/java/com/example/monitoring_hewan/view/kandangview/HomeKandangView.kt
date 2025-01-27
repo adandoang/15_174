@@ -125,7 +125,6 @@ fun HomeStatus(
     }
 }
 
-//Homescreen menampilkan loading message
 @Composable
 fun OnLoading(modifier: Modifier = Modifier){
     Image(
@@ -135,7 +134,6 @@ fun OnLoading(modifier: Modifier = Modifier){
     )
 }
 
-//Homescreen menampilkan error message
 @Composable
 fun OnError(retryAction: ()->Unit, modifier: Modifier = Modifier){
     Column (
@@ -204,12 +202,12 @@ fun KdgCard(
                 )
                 Spacer(Modifier.weight(1f))
                 Text(
-                    text = kandang.nama_hewan,
+                    text = kandang.kapasitas.toString(),
                     style = MaterialTheme.typography.titleMedium
                 )
             }
             Text(
-                text = kandang.kapasitas.toString(),
+                text = "${kandang.id_hewan} - ${kandang.nama_hewan}",
                 style = MaterialTheme.typography.titleMedium
             )
             Text(

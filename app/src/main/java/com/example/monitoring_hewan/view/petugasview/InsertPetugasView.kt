@@ -117,9 +117,7 @@ fun FormInput(
     onValueChange: (InsertUiEvent)->Unit={},
     enabled: Boolean = true
 ) {
-    var chosenDropdown = listOf("Herbivora", "Karnivora", "Omnivora")
-    var expanded by remember { mutableStateOf(false) }
-    var selectedItem by remember { mutableStateOf("") }
+    val jabatan = listOf("Keeper", "Dokter Hewan", "Kurator")
 
     Column (
         modifier = modifier,
@@ -141,14 +139,27 @@ fun FormInput(
             enabled = enabled,
             singleLine = true
         )
-        OutlinedTextField(
-            value = insertUiEvent.jabatan,
-            onValueChange = {onValueChange(insertUiEvent.copy(jabatan = it))},
-            label = { Text("Jabatan") },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
-            singleLine = true
-        )
+        Text(text = "Tipe Pakan")
+        Row (
+            modifier = Modifier.fillMaxWidth()
+        ){
+            jabatan.forEach { jbt ->
+                Row (
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ){
+                    RadioButton(
+                        selected = insertUiEvent.jabatan == jbt,
+                        onClick = {
+                            onValueChange(insertUiEvent.copy(jabatan = jbt))
+                        },
+                    )
+                    Text(
+                        text = jbt,
+                    )
+                }
+            }
+        }
         if (enabled){
             Text(
                 text = "Isi Semua Data",

@@ -1,33 +1,79 @@
 package com.example.monitoring_hewan.viewmodel.monitoringvm
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.monitoring_hewan.model.Hewan
+import com.example.monitoring_hewan.model.Kandang
 import com.example.monitoring_hewan.model.Monitoring
+import com.example.monitoring_hewan.model.Petugas
+import com.example.monitoring_hewan.repository.KandangRepository
 import com.example.monitoring_hewan.repository.MonitoringRepository
+import com.example.monitoring_hewan.repository.PetugasRepository
 import kotlinx.coroutines.launch
 import kotlin.math.tan
 
-class InsertMonitoringViewModel (private val mtr: MonitoringRepository): ViewModel() {
+class InsertMonitoringViewModel(
+    private val mtr: MonitoringRepository,
+    private val kdg: KandangRepository,
+    private val ptgs: PetugasRepository
+): ViewModel() {
     var uiState by mutableStateOf(InsertUiState())
         private set
+    var kdglist by mutableStateOf<List<Kandang>>(listOf())
 
-    fun updateInsertMtrState(insertUiEvent:InsertUiEvent) {
-        uiState = InsertUiState(insertUiEvent = insertUiEvent)
+    var dokterHewanPetugas by mutableStateOf<List<Petugas>>(listOf())
+
+    fun updateInsertMtrState(insertUiEvent: InsertUiEvent) {
+        val totalHewan = insertUiEvent.hewan_sakit + insertUiEvent.hewan_sehat
+        val status = when {
+            totalHewan == 0 -> ""
+            insertUiEvent.hewan_sakit.toDouble() / totalHewan < 0.1 -> "Aman"
+            insertUiEvent.hewan_sakit.toDouble() / totalHewan < 0.5 -> "Waspada"
+            else -> "Kritis"
+        }
+
+        uiState = InsertUiState(insertUiEvent.copy(status = status))
+    }
+
+
+    fun getDokterHewanPetugas() {
+        viewModelScope.launch {
+            try {
+                val petugasData = ptgs.getPetugas()
+                dokterHewanPetugas = petugasData.data.filter { it.jabatan == "Dokter Hewan" }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+
+    fun getKandang() {
+        viewModelScope.launch {
+            try {
+                val kdgdata = kdg.getKandang()
+                kdglist = kdgdata.data
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     suspend fun insertMtr() {
-        viewModelScope.launch{
+        viewModelScope.launch {
             try {
                 mtr.insertMonitoring(uiState.insertUiEvent.toMtr())
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 }
+
 
 data class InsertUiState(
     val insertUiEvent: InsertUiEvent = InsertUiEvent()
