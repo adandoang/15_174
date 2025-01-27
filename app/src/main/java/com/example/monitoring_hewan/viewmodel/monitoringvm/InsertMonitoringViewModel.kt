@@ -10,22 +10,28 @@ import com.example.monitoring_hewan.model.Hewan
 import com.example.monitoring_hewan.model.Kandang
 import com.example.monitoring_hewan.model.Monitoring
 import com.example.monitoring_hewan.model.Petugas
+import com.example.monitoring_hewan.repository.HewanRepository
 import com.example.monitoring_hewan.repository.KandangRepository
 import com.example.monitoring_hewan.repository.MonitoringRepository
 import com.example.monitoring_hewan.repository.PetugasRepository
+import com.example.monitoring_hewan.viewmodel.kandangvm.HomeKandangViewModel
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
 import kotlin.math.tan
 
 class InsertMonitoringViewModel(
     private val mtr: MonitoringRepository,
     private val kdg: KandangRepository,
-    private val ptgs: PetugasRepository
+    private val ptgs: PetugasRepository,
+    private val hwn: HewanRepository
+
 ): ViewModel() {
     var uiState by mutableStateOf(InsertUiState())
         private set
     var kdglist by mutableStateOf<List<Kandang>>(listOf())
-
     var dokterHewanPetugas by mutableStateOf<List<Petugas>>(listOf())
+
 
     fun updateInsertMtrState(insertUiEvent: InsertUiEvent) {
         val totalHewan = insertUiEvent.hewan_sakit + insertUiEvent.hewan_sehat
@@ -39,7 +45,6 @@ class InsertMonitoringViewModel(
         uiState = InsertUiState(insertUiEvent.copy(status = status))
     }
 
-
     fun getDokterHewanPetugas() {
         viewModelScope.launch {
             try {
@@ -51,14 +56,20 @@ class InsertMonitoringViewModel(
         }
     }
 
-
     fun getKandang() {
         viewModelScope.launch {
             try {
-                val kdgdata = kdg.getKandang()
-                kdglist = kdgdata.data
-            } catch (e: Exception) {
-                e.printStackTrace()
+                val kandangList = kdg.getKandang().data
+                val hewanList = hwn.getHewan().data
+
+                val kandangWithNamaHewan = kandangList.map { kandang ->
+                    val namaHewan = hewanList.find { it.id_hewan == kandang.id_hewan }?.nama_hewan ?: "Unknown"
+                    kandang.copy(nama_hewan = namaHewan)
+                }
+
+                kdglist = kandangWithNamaHewan
+            } catch (e: IOException) {
+            } catch (e: HttpException) {
             }
         }
     }

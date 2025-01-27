@@ -41,6 +41,9 @@ class DetailKandangViewModel(
             kandangDetailState = DetailUiState.Loading
             kandangDetailState = try {
                 val kandang = kdg.getKandangByid_kandang(_id_kandang)
+
+                val hewan = hwn.getHewanByid_hewan(kandang.id_hewan)
+                kandang.nama_hewan = hewan.nama_hewan
                 DetailUiState.Success(kandang)
             } catch (e: IOException) {
                 DetailUiState.Error
@@ -49,6 +52,7 @@ class DetailKandangViewModel(
             }
         }
     }
+
 
     fun deleteKdg(id_kandang:String) {
         viewModelScope.launch {

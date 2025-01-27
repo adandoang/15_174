@@ -41,9 +41,9 @@ object PenyediaViewModel{
         initializer { UpdatePetugasViewModel(createSavedStateHandle(),aplikasi().container.petugasRepository) }
 
         initializer { HomeMonitoringViewModel(aplikasi().container.monitoringRepository) }
-        initializer { InsertMonitoringViewModel(aplikasi().container.monitoringRepository, aplikasi().container.kandangRepository,aplikasi().container.petugasRepository) }
+        initializer { InsertMonitoringViewModel(aplikasi().container.monitoringRepository, aplikasi().container.kandangRepository,aplikasi().container.petugasRepository, aplikasi().container.hewanRepository) }
         initializer { DetailMonitoringViewModel(createSavedStateHandle(),aplikasi().container.monitoringRepository) }
-        initializer { UpdateMonitoringViewModel(createSavedStateHandle(),aplikasi().container.monitoringRepository, aplikasi().container.kandangRepository,aplikasi().container.petugasRepository) }
+        initializer { UpdateMonitoringViewModel(createSavedStateHandle(),aplikasi().container.monitoringRepository, aplikasi().container.kandangRepository,aplikasi().container.petugasRepository, aplikasi().container.hewanRepository) }
     }
     fun CreationExtras.aplikasi(): Applications =
         (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY]as Applications)

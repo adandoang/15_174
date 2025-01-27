@@ -24,8 +24,9 @@ class HomeKandangViewModel (
     private val
     hwn: HewanRepository
 ):ViewModel() {
-    var kdgUIState: HomeUiState by mutableStateOf(HomeUiState.Loading)
-        private set
+    private var _kdgUIState: HomeUiState by mutableStateOf(HomeUiState.Loading)
+    val kdgUIState: HomeUiState
+        get() = _kdgUIState
 
     init {
         getKdg()
@@ -33,22 +34,20 @@ class HomeKandangViewModel (
 
     fun getKdg() {
         viewModelScope.launch {
-            kdgUIState = HomeUiState.Loading
+            _kdgUIState = HomeUiState.Loading
             try {
                 val kandangList = kdg.getKandang().data
-
                 val hewanList = hwn.getHewan().data
-
                 val kandangWithNamaHewan = kandangList.map { kandang ->
                     val namaHewan = hewanList.find { it.id_hewan == kandang.id_hewan }?.nama_hewan ?: "Unknown"
                     kandang.copy(nama_hewan = namaHewan)
                 }
 
-                kdgUIState = HomeUiState.Success(kandangWithNamaHewan)
+                _kdgUIState = HomeUiState.Success(kandangWithNamaHewan)
             } catch (e: IOException) {
-                kdgUIState = HomeUiState.Error
+                _kdgUIState = HomeUiState.Error
             } catch (e: HttpException) {
-                kdgUIState = HomeUiState.Error
+                _kdgUIState = HomeUiState.Error
             }
         }
     }

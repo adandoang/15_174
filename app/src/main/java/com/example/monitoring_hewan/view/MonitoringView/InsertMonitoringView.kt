@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,6 +44,7 @@ import com.example.monitoring_hewan.model.Kandang
 import com.example.monitoring_hewan.model.Petugas
 import com.example.monitoring_hewan.navigation.DestinasiNavigasi
 import com.example.monitoring_hewan.viewmodel.PenyediaViewModel
+import com.example.monitoring_hewan.viewmodel.kandangvm.HomeKandangViewModel
 import com.example.monitoring_hewan.viewmodel.monitoringvm.InsertMonitoringViewModel
 import com.example.monitoring_hewan.viewmodel.monitoringvm.InsertUiEvent
 import com.example.monitoring_hewan.viewmodel.monitoringvm.InsertUiState
@@ -62,6 +64,7 @@ fun EntryScreenMonitoring(
     navigateBack: ()-> Unit,
     modifier: Modifier = Modifier,
     viewModel: InsertMonitoringViewModel = viewModel(factory = PenyediaViewModel.Factory),
+    kdgviewModel: HomeKandangViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ){
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -69,6 +72,7 @@ fun EntryScreenMonitoring(
 
     viewModel.getKandang()
     viewModel.getDokterHewanPetugas()
+    kdgviewModel.getKdg()
 
     Scaffold (
         modifier=modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -83,7 +87,7 @@ fun EntryScreenMonitoring(
     ){ innerPadding ->
         EntryBody(
             insertUiState = viewModel.uiState,
-            onSiswaValueChange = viewModel::updateInsertMtrState,
+            onMtrValueChange = viewModel::updateInsertMtrState,
             onSaveClick = {
                 coroutineScope.launch {
                     viewModel.insertMtr()
@@ -104,7 +108,7 @@ fun EntryScreenMonitoring(
 @Composable
 fun EntryBody(
     insertUiState: InsertUiState,
-    onSiswaValueChange: (InsertUiEvent)->Unit,
+    onMtrValueChange: (InsertUiEvent)->Unit,
     onSaveClick: ()->Unit,
     modifier: Modifier = Modifier,
     kandangList: List<Kandang>,
@@ -117,7 +121,7 @@ fun EntryBody(
     ){
         FormInput(
             insertUiEvent = insertUiState.insertUiEvent,
-            onValueChange = onSiswaValueChange,
+            onValueChange = onMtrValueChange,
             modifier = Modifier.fillMaxWidth(),
             kandangList = kandangList,
             dokterHewanList = dokterHewanList,
@@ -148,9 +152,18 @@ fun FormInput(
 
     var expanded by remember { mutableStateOf(false) }
     var selectedKandang by remember { mutableStateOf("") }
+    var selectedKandangId by remember { mutableStateOf("") }
     var expandedPetugas by remember { mutableStateOf(false) }
     var selectedPetugas by remember { mutableStateOf("") }
     var showDateTimePicker by remember { mutableStateOf(false) }
+
+    LaunchedEffect(insertUiEvent) {
+        val kandang = kandangList.find { it.id_kandang == insertUiEvent.id_kandang }
+        val petugas = dokterHewanList.find { it.id_petugas == insertUiEvent.id_petugas }
+
+        selectedKandang = kandang?.let { "${it.id_kandang} - ${it.nama_hewan}" } ?: ""
+        selectedPetugas = petugas?.let { "${it.id_petugas} - ${it.nama_petugas}" } ?: ""
+    }
 
 
     Column (
@@ -215,14 +228,14 @@ fun FormInput(
                     DropdownMenuItem(
                         text = { Text("${kandang.id_kandang} - ${kandang.nama_hewan}") },
                         onClick = {
-                            selectedKandang = kandang.id_kandang
-                            onValueChange(insertUiEvent.copy(id_kandang = kandang.id_kandang))
+                            selectedKandang = "${kandang.id_kandang} - ${kandang.nama_hewan}"
+                            selectedKandangId = kandang.id_kandang
+                            onValueChange(insertUiEvent.copy(id_kandang = selectedKandangId))
                             expanded = false
                         },
                     )
                 }
             }
-
         }
         OutlinedTextField(
             value = insertUiEvent.tanggal_monitoring,

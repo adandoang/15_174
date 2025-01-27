@@ -137,7 +137,9 @@ fun ItemDetailKdg(
         ) {
             ComponentDetailKdg(judul = "ID Kandang", isinya = kandang.id_kandang)
             Divider(modifier = Modifier.padding(vertical = 8.dp))
-            ComponentDetailKdg(judul = "Nama Hewan", isinya = kandang.id_hewan)
+            ComponentDetailKdg(judul = "ID Hewan", isinya = kandang.id_hewan)
+            Divider(modifier = Modifier.padding(vertical = 8.dp))
+            ComponentDetailKdg(judul = "Nama Hewan", isinya = kandang.nama_hewan)
             Divider(modifier = Modifier.padding(vertical = 8.dp))
             ComponentDetailKdg(judul = "Kapasitas", isinya = kandang.kapasitas.toString())
             Divider(modifier = Modifier.padding(vertical = 8.dp))

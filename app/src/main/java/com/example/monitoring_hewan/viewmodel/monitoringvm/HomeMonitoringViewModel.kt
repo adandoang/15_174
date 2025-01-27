@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.monitoring_hewan.model.Kandang
 import com.example.monitoring_hewan.model.Monitoring
 import com.example.monitoring_hewan.repository.MonitoringRepository
 import kotlinx.coroutines.launch

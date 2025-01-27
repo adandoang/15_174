@@ -37,6 +37,7 @@ fun UpdateScreenKandang(
 ){
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val hwnList = viewModel.hwnlist
 
     viewModel.getHewan()
 
@@ -64,7 +65,7 @@ fun UpdateScreenKandang(
                     }
                 }
             },
-            hewanList = viewModel.hwnlist
+            hewanList = hwnList
         )
     }
 }
