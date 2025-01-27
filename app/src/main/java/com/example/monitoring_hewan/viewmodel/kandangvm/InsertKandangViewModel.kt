@@ -1,5 +1,6 @@
 package com.example.monitoring_hewan.viewmodel.kandangvm
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,37 +12,20 @@ import com.example.monitoring_hewan.repository.HewanRepository
 import com.example.monitoring_hewan.repository.KandangRepository
 import kotlinx.coroutines.launch
 
-class InsertKandangViewModel(private val kdg: KandangRepository, private val hwn: HewanRepository) : ViewModel() {
+class InsertKandangViewModel(
+    private val kdg: KandangRepository,
+    private val hwn: HewanRepository
+) : ViewModel() {
+
     var uiState by mutableStateOf(InsertUiState())
         private set
-
-    var hewanList by mutableStateOf(emptyList<Hewan>())
-        private set
-
-    init {
-        loadHewanList()
-    }
-
-    private fun loadHewanList() {
-        viewModelScope.launch {
-            try {
-                val response = hwn.getHewan()
-                if (response.status) {
-                    hewanList = response.data
-                } else {
-                    println("Failed to load animals: ${response.message}")
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
+    var hwnlist by mutableStateOf<List<Hewan>>(listOf())
 
     fun updateInsertKdgState(insertUiEvent: InsertUiEvent) {
         uiState = InsertUiState(insertUiEvent = insertUiEvent)
     }
 
-    suspend fun insertKdg() {
+    fun insertKdg() {
         viewModelScope.launch {
             try {
                 kdg.insertKandang(uiState.insertUiEvent.toKdg())
@@ -50,8 +34,21 @@ class InsertKandangViewModel(private val kdg: KandangRepository, private val hwn
             }
         }
     }
-}
+    fun getHewan() {
+        viewModelScope.launch {
+            try {
+                val hwndata = hwn.getHewan()
+                hwnlist = hwndata.data
 
+                // Tambahkan log untuk debugging
+                Log.d("InsertKandangViewModel", "Hewan List Loaded: $hwnlist")
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("InsertKandangViewModel", "Error fetching Hewan: ${e.message}")
+            }
+        }
+    }
+}
 
 data class InsertUiState(
     val insertUiEvent: InsertUiEvent = InsertUiEvent()

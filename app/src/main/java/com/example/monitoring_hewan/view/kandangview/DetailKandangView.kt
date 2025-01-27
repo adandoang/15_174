@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.monitoring_hewan.customwidget.CostumeTopAppBar
+import com.example.monitoring_hewan.model.Hewan
 import com.example.monitoring_hewan.model.Kandang
 import com.example.monitoring_hewan.navigation.DestinasiNavigasi
 import com.example.monitoring_hewan.viewmodel.PenyediaViewModel
@@ -110,7 +111,7 @@ fun DetailStatus(
                 ItemDetailKdg(
                     kandang = detailUiState.kandang,
                     modifier = modifier.fillMaxWidth(),
-                    onDeleteClick = onDeleteClick
+                    onDeleteClick = onDeleteClick,
                 )
             }
         }
@@ -123,7 +124,7 @@ fun DetailStatus(
 fun ItemDetailKdg(
     modifier: Modifier = Modifier,
     kandang: Kandang,
-    onDeleteClick: () -> Unit
+    onDeleteClick: () -> Unit,
 ) {
     var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
     Card(
@@ -136,7 +137,7 @@ fun ItemDetailKdg(
         ) {
             ComponentDetailKdg(judul = "ID Kandang", isinya = kandang.id_kandang)
             Divider(modifier = Modifier.padding(vertical = 8.dp))
-            ComponentDetailKdg(judul = "ID Hewan", isinya = kandang.id_hewan)
+            ComponentDetailKdg(judul = "Nama Hewan", isinya = kandang.id_hewan)
             Divider(modifier = Modifier.padding(vertical = 8.dp))
             ComponentDetailKdg(judul = "Kapasitas", isinya = kandang.kapasitas.toString())
             Divider(modifier = Modifier.padding(vertical = 8.dp))

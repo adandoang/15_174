@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.monitoring_hewan.repository.HewanRepository
 import com.example.monitoring_hewan.view.DestinasiHOME
 import com.example.monitoring_hewan.view.Home
 import com.example.monitoring_hewan.view.MonitoringView.DestinasiDetailMonitoring

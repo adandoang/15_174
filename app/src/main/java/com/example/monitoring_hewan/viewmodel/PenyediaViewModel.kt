@@ -30,10 +30,10 @@ object PenyediaViewModel{
         initializer { DetailHewanViewModel(createSavedStateHandle(),aplikasi().container.hewanRepository) }
         initializer { UpdateHewanViewModel(createSavedStateHandle(),aplikasi().container.hewanRepository) }
 
-        initializer { HomeKandangViewModel(aplikasi().container.kandangRepository) }
-        initializer { InsertKandangViewModel(aplikasi().container.kandangRepository, aplikasi().container.hewanRepository) }
-        initializer { DetailKandangViewModel(createSavedStateHandle(),aplikasi().container.kandangRepository) }
-        initializer { UpdateKandangViewModel(createSavedStateHandle(),aplikasi().container.kandangRepository) }
+        initializer { HomeKandangViewModel(aplikasi().container.kandangRepository, aplikasi().container.hewanRepository) }
+        initializer { InsertKandangViewModel(aplikasi().container.kandangRepository,aplikasi().container.hewanRepository) }
+        initializer { DetailKandangViewModel(createSavedStateHandle(),aplikasi().container.kandangRepository, aplikasi().container.hewanRepository) }
+        initializer { UpdateKandangViewModel(createSavedStateHandle(),aplikasi().container.kandangRepository, aplikasi().container.hewanRepository) }
 
         initializer { HomePetugasViewModel(aplikasi().container.petugasRepository) }
         initializer { InsertPetugasViewModel(aplikasi().container.petugasRepository) }

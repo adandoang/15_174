@@ -203,12 +203,6 @@ fun PtgsCard(
                     style = MaterialTheme.typography.titleLarge
                 )
                 Spacer(Modifier.weight(1f))
-                IconButton(onClick =  { onDeleteClick(petugas)}) {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = null,
-                    )
-                }
                 Text(
                     text = petugas.id_petugas,
                     style = MaterialTheme.typography.titleMedium

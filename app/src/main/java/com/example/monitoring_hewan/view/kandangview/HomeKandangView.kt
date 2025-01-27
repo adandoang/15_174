@@ -203,14 +203,8 @@ fun KdgCard(
                     style = MaterialTheme.typography.titleLarge
                 )
                 Spacer(Modifier.weight(1f))
-                IconButton(onClick =  { onDeleteClick(kandang)}) {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = null,
-                    )
-                }
                 Text(
-                    text = kandang.id_hewan,
+                    text = kandang.nama_hewan,
                     style = MaterialTheme.typography.titleMedium
                 )
             }

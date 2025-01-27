@@ -117,9 +117,7 @@ fun FormInput(
     onValueChange: (InsertUiEvent)->Unit={},
     enabled: Boolean = true
 ) {
-    var chosenDropdown = listOf("Herbivora", "Karnivora", "Omnivora")
-    var expanded by remember { mutableStateOf(false) }
-    var selectedItem by remember { mutableStateOf("") }
+    val tipe_pakan = listOf("Herbivora", "Karnivora", "Omnivora")
 
     Column (
         modifier = modifier,
@@ -142,35 +140,22 @@ fun FormInput(
             singleLine = true
         )
         Text(text = "Tipe Pakan")
-
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { expanded = !expanded }
-        ) {
-            OutlinedTextField(
-                value = selectedItem,
-                onValueChange = { },
-                label = { Text("Jenis Hewan") },
-                trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-                },
-                modifier = Modifier.menuAnchor().fillMaxWidth(),
-                readOnly = true,
-                placeholder = { Text("Pilih Jenis") },
-                enabled = enabled
-            )
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                chosenDropdown.forEach { item ->
-                    DropdownMenuItem(
+        Row (
+            modifier = Modifier.fillMaxWidth()
+        ){
+            tipe_pakan.forEach { tp ->
+                Row (
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ){
+                    RadioButton(
+                        selected = insertUiEvent.tipe_pakan == tp,
                         onClick = {
-                            selectedItem = item
-                            expanded = false
-                            onValueChange(insertUiEvent.copy(tipe_pakan = item))
+                            onValueChange(insertUiEvent.copy(tipe_pakan = tp))
                         },
-                        text = { Text(text = item) }
+                    )
+                    Text(
+                        text = tp,
                     )
                 }
             }

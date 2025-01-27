@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -50,50 +51,44 @@ fun Home(
     ) {
     Box(
         modifier = Modifier
-            .fillMaxSize() // Mengisi seluruh layar
+            .fillMaxSize()
             .padding(10.dp),
-        contentAlignment = Alignment.Center // Memusatkan konten secara vertikal dan horizontal
+        contentAlignment = Alignment.Center
     ) {
         LazyVerticalGrid(
-            columns = GridCells.Fixed(2), // 2 kolom untuk grid
+            columns = GridCells.Fixed(2),
             modifier = Modifier
-                .wrapContentSize() // Ukuran grid mengikuti konten
+                .wrapContentSize()
                 .padding(10.dp),
-            horizontalArrangement = Arrangement.spacedBy(10.dp), // Jarak horizontal antar item
-            verticalArrangement = Arrangement.spacedBy(10.dp) // Jarak vertikal antar item
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             // Item 1: Kandang
             item {
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .aspectRatio(1f) // Membuat persegi
-                        .background(Color.Gray, RoundedCornerShape(16.dp))
+                        .aspectRatio(1f)
+                        .padding(10.dp),
+                    shape = RoundedCornerShape(16.dp)
                 ) {
                     Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(10.dp),
+                        verticalArrangement = Arrangement.Center, // Memusatkan konten secara vertikal
+                        horizontalAlignment = Alignment.CenterHorizontally // Memusatkan konten secara horizontal
                     ) {
-                        Text(
-                            text = "Kandang",
-                            color = colorResource(id = R.color.purple_700),
-                            fontSize = 20.sp,
-                            modifier = Modifier.padding(5.dp),
-                            fontWeight = FontWeight.Bold
-                        )
                         Image(
-                            painter = painterResource(R.drawable.ic_launcher_foreground),
+                            painter = painterResource(R.drawable.kandang),
                             contentDescription = "",
                             modifier = Modifier.size(100.dp)
                         )
-                        Spacer(modifier = Modifier.padding(5.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
                         Button(
-                            onClick = onButtonClickKdg,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(5.dp)
+                            onClick = onButtonClickKdg
                         ) {
-                            Text(text = "Go to Kandang Page")
+                            Text(text = "Kandang")
                         }
                     }
                 }
@@ -105,32 +100,26 @@ fun Home(
                     modifier = Modifier
                         .fillMaxWidth()
                         .aspectRatio(1f)
-                        .background(Color.Gray, RoundedCornerShape(16.dp))
+                        .padding(10.dp),
+                    shape = RoundedCornerShape(16.dp),
                 ) {
                     Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(10.dp),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(
-                            text = "Hewan",
-                            color = colorResource(id = R.color.purple_700),
-                            fontSize = 20.sp,
-                            modifier = Modifier.padding(5.dp),
-                            fontWeight = FontWeight.Bold
-                        )
                         Image(
-                            painter = painterResource(R.drawable.loading_img),
+                            painter = painterResource(R.drawable.hewan),
                             contentDescription = "",
                             modifier = Modifier.size(100.dp)
                         )
-                        Spacer(modifier = Modifier.padding(5.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
                         Button(
-                            onClick = onButtonClickHwn,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(5.dp)
+                            onClick = onButtonClickHwn
                         ) {
-                            Text(text = "Go to Hewan Page")
+                            Text(text = "Hewan")
                         }
                     }
                 }
@@ -142,32 +131,26 @@ fun Home(
                     modifier = Modifier
                         .fillMaxWidth()
                         .aspectRatio(1f)
-                        .background(Color.Gray, RoundedCornerShape(16.dp))
+                        .padding(10.dp),
+                    shape = RoundedCornerShape(16.dp)
                 ) {
                     Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(10.dp),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(
-                            text = "Petugas",
-                            color = colorResource(id = R.color.purple_700),
-                            fontSize = 20.sp,
-                            modifier = Modifier.padding(5.dp),
-                            fontWeight = FontWeight.Bold
-                        )
                         Image(
-                            painter = painterResource(R.drawable.loading_img),
+                            painter = painterResource(R.drawable.petugas),
                             contentDescription = "",
                             modifier = Modifier.size(100.dp)
                         )
-                        Spacer(modifier = Modifier.padding(5.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
                         Button(
-                            onClick = onButtonClickPtgs,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(5.dp)
+                            onClick = onButtonClickPtgs
                         ) {
-                            Text(text = "Go to Petugas Page")
+                            Text(text = "Petugas")
                         }
                     }
                 }
@@ -179,38 +162,31 @@ fun Home(
                     modifier = Modifier
                         .fillMaxWidth()
                         .aspectRatio(1f)
-                        .background(Color.Gray, RoundedCornerShape(16.dp))
+                        .padding(10.dp),
+                    shape = RoundedCornerShape(16.dp)
                 ) {
                     Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(10.dp),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(
-                            text = "Monitoring",
-                            color = colorResource(id = R.color.purple_700),
-                            fontSize = 20.sp,
-                            modifier = Modifier.padding(5.dp),
-                            fontWeight = FontWeight.Bold
-                        )
                         Image(
-                            painter = painterResource(R.drawable.loading_img),
+                            painter = painterResource(R.drawable.monitoring),
                             contentDescription = "",
                             modifier = Modifier.size(100.dp)
                         )
-                        Spacer(modifier = Modifier.padding(5.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
                         Button(
-                            onClick = onButtonClickMtr,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(5.dp)
+                            onClick = onButtonClickMtr
                         ) {
-                            Text(text = "Go to Monitoring Page")
+                            Text(text = "Monitoring")
                         }
                     }
                 }
             }
         }
     }
-
 
 }

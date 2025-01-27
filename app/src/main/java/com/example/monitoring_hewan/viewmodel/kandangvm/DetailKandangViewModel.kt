@@ -6,7 +6,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.monitoring_hewan.model.Hewan
 import com.example.monitoring_hewan.model.Kandang
+import com.example.monitoring_hewan.repository.HewanRepository
 import com.example.monitoring_hewan.repository.KandangRepository
 import com.example.monitoring_hewan.view.kandangview.DestinasiDetailKandang
 import kotlinx.coroutines.launch
@@ -21,7 +23,8 @@ sealed class DetailUiState {
 
 class DetailKandangViewModel(
     savedStateHandle: SavedStateHandle,
-    private val kdg: KandangRepository
+    private val kdg: KandangRepository,
+    private val hwn: HewanRepository
 ) : ViewModel() {
 
     var kandangDetailState: DetailUiState by mutableStateOf(DetailUiState.Loading)

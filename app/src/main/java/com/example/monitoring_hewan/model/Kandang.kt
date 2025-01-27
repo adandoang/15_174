@@ -8,6 +8,7 @@ data class Kandang (
     val id_hewan: String,
     val kapasitas: Int,
     val lokasi: String,
+    var nama_hewan: String = ""
 )
 
 @Serializable

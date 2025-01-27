@@ -171,9 +171,6 @@ fun HwnLayout(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { onDetailClick(hewan) },
-                onDeleteClick = {
-                    onDeleteClick(hewan)
-                }
             )
         }
     }
@@ -183,7 +180,6 @@ fun HwnLayout(
 fun HwnCard(
     hewan: Hewan,
     modifier: Modifier = Modifier,
-    onDeleteClick: (Hewan) -> Unit ={}
 ){
     Card (
         modifier = modifier,
@@ -203,12 +199,6 @@ fun HwnCard(
                     style = MaterialTheme.typography.titleLarge
                 )
                 Spacer(Modifier.weight(1f))
-                IconButton(onClick =  { onDeleteClick(hewan)}) {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = null,
-                    )
-                }
                 Text(
                     text = hewan.id_hewan,
                     style = MaterialTheme.typography.titleMedium

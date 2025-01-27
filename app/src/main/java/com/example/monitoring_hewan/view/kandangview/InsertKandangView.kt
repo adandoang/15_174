@@ -34,7 +34,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.monitoring_hewan.customwidget.CostumeTopAppBar
+import com.example.monitoring_hewan.model.Hewan
 import com.example.monitoring_hewan.navigation.DestinasiNavigasi
+import com.example.monitoring_hewan.repository.HewanRepository
 import com.example.monitoring_hewan.viewmodel.PenyediaViewModel
 import com.example.monitoring_hewan.viewmodel.kandangvm.InsertKandangViewModel
 import com.example.monitoring_hewan.viewmodel.kandangvm.InsertUiEvent
@@ -51,10 +53,14 @@ object DestinasiEntryKandang: DestinasiNavigasi {
 fun EntryScreenKandang(
     navigateBack: ()-> Unit,
     modifier: Modifier = Modifier,
-    viewModel: InsertKandangViewModel= viewModel(factory = PenyediaViewModel.Factory)
+    viewModel: InsertKandangViewModel= viewModel(factory = PenyediaViewModel.Factory),
 ){
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
+    viewModel.getHewan()
+
+
     Scaffold (
         modifier=modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
@@ -68,7 +74,7 @@ fun EntryScreenKandang(
     ){ innerPadding ->
         EntryBody(
             insertUiState = viewModel.uiState,
-            onSiswaValueChange = viewModel::updateInsertKdgState,
+            onKandangValueChange = viewModel::updateInsertKdgState,
             onSaveClick = {
                 coroutineScope.launch {
                     viewModel.insertKdg()
@@ -78,7 +84,8 @@ fun EntryScreenKandang(
             modifier = Modifier
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            hewanList = viewModel.hwnlist
         )
     }
 }
@@ -86,9 +93,13 @@ fun EntryScreenKandang(
 @Composable
 fun EntryBody(
     insertUiState: InsertUiState,
-    onSiswaValueChange: (InsertUiEvent)->Unit,
+    onKandangValueChange: (InsertUiEvent)->Unit,
     onSaveClick: ()->Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    hewanList: List<Hewan>
+
+
+
 ){
     Column (
         verticalArrangement = Arrangement.spacedBy(18.dp),
@@ -96,8 +107,9 @@ fun EntryBody(
     ){
         FormInput(
             insertUiEvent = insertUiState.insertUiEvent,
-            onValueChange = onSiswaValueChange,
-            modifier = Modifier.fillMaxWidth()
+            onValueChange = onKandangValueChange,
+            modifier = Modifier.fillMaxWidth(),
+            hewanList = hewanList
         )
         Button(
             onClick = onSaveClick,
@@ -116,8 +128,11 @@ fun FormInput(
     modifier: Modifier = Modifier,
     onValueChange: (InsertUiEvent)->Unit={},
     enabled: Boolean = true,
+    hewanList: List<Hewan>,
 
 ) {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedHewanName by remember { mutableStateOf("") }
 
     Column (
         modifier = modifier,
@@ -131,14 +146,37 @@ fun FormInput(
             enabled = enabled,
             singleLine = true
         )
-        OutlinedTextField(
-            value = insertUiEvent.id_hewan,
-            onValueChange = {onValueChange(insertUiEvent.copy(id_hewan = it))},
-            label = { Text("ID Hewan") },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
-            singleLine = true
-        )
+
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = !expanded },
+        ) {
+            OutlinedTextField(
+                value = selectedHewanName,
+                onValueChange = {},
+                readOnly = true,
+                label = { Text("Nama Hewan") },
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                modifier = Modifier.menuAnchor().fillMaxWidth(),
+            )
+
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+            ) {
+                hewanList.forEach { hewan ->
+                    DropdownMenuItem(
+                        text = { Text(hewan.nama_hewan) },
+                        onClick = {
+                            selectedHewanName = hewan.nama_hewan
+                            onValueChange(insertUiEvent.copy(id_hewan = hewan.id_hewan))
+                            expanded = false
+                        },
+                    )
+                }
+            }
+        }
+
         OutlinedTextField(
             value = if (insertUiEvent.kapasitas == 0) "" else insertUiEvent.kapasitas.toString(),
             onValueChange = {

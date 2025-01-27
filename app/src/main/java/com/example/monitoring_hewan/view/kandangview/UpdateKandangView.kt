@@ -10,7 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.monitoring_hewan.customwidget.CostumeTopAppBar
+import com.example.monitoring_hewan.model.Hewan
 import com.example.monitoring_hewan.navigation.DestinasiNavigasi
+import com.example.monitoring_hewan.repository.HewanRepository
 import com.example.monitoring_hewan.viewmodel.PenyediaViewModel
 import com.example.monitoring_hewan.viewmodel.kandangvm.UpdateKandangViewModel
 import kotlinx.coroutines.Dispatchers
@@ -31,10 +33,12 @@ fun UpdateScreenKandang(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
     onNavigate:()-> Unit,
-    viewModel: UpdateKandangViewModel = viewModel(factory = PenyediaViewModel.Factory)
+    viewModel: UpdateKandangViewModel = viewModel(factory = PenyediaViewModel.Factory),
 ){
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
+    viewModel.getHewan()
 
     Scaffold (
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -50,7 +54,7 @@ fun UpdateScreenKandang(
         EntryBody(
             modifier = Modifier.padding(padding),
             insertUiState = viewModel.UpdateUiState,
-            onSiswaValueChange = viewModel::updateInsertKdgState,
+            onKandangValueChange = viewModel::updateInsertKdgState,
             onSaveClick = {
                 coroutineScope.launch {
                     viewModel.updateKdg()
@@ -59,7 +63,8 @@ fun UpdateScreenKandang(
                         onNavigate()
                     }
                 }
-            }
+            },
+            hewanList = viewModel.hwnlist
         )
     }
 }

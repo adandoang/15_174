@@ -203,12 +203,6 @@ fun MtrCard(
                     style = MaterialTheme.typography.titleLarge
                 )
                 Spacer(Modifier.weight(1f))
-                IconButton(onClick =  { onDeleteClick(monitoring)}) {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = null,
-                    )
-                }
                 Text(
                     text = monitoring.id_kandang,
                     style = MaterialTheme.typography.titleMedium
