@@ -2,11 +2,13 @@ package com.example.monitoring_hewan.view.petugasview
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -16,6 +18,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -64,18 +67,6 @@ fun DetailScreenPetugas(
                 }
             )
         },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = navigateToItemUpdate,
-                shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.padding(18.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Edit,
-                    contentDescription = "Edit Petugas"
-                )
-            }
-        }
     ) { innerPadding ->
         DetailStatus(
             modifier = Modifier.padding(innerPadding),
@@ -86,7 +77,8 @@ fun DetailScreenPetugas(
                     if (state is DetailUiState.Success) state.petugas.id_petugas else ""
                 })
                 navigateBack()
-            }
+            },
+            navigateToItemUpdate = navigateToItemUpdate
         )
     }
 }
@@ -97,7 +89,8 @@ fun DetailStatus(
     retryAction: () -> Unit,
     modifier: Modifier = Modifier,
     detailUiState: DetailUiState,
-    onDeleteClick: () -> Unit
+    onDeleteClick: () -> Unit,
+    navigateToItemUpdate: () -> Unit
 ) {
     when (detailUiState) {
         is DetailUiState.Loading -> OnLoading(modifier = modifier.fillMaxSize())
@@ -110,7 +103,8 @@ fun DetailStatus(
                 ItemDetailPtgs(
                     petugas = detailUiState.petugas,
                     modifier = modifier.fillMaxWidth(),
-                    onDeleteClick = onDeleteClick
+                    onDeleteClick = onDeleteClick,
+                    navigateToItemUpdate = navigateToItemUpdate
                 )
             }
         }
@@ -126,7 +120,8 @@ fun DetailStatus(
 fun ItemDetailPtgs(
     modifier: Modifier = Modifier,
     petugas: Petugas,
-    onDeleteClick: () -> Unit
+    onDeleteClick: () -> Unit,
+    navigateToItemUpdate: () -> Unit
 ) {
     var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
     Card(
@@ -145,13 +140,18 @@ fun ItemDetailPtgs(
 
             Spacer(modifier = Modifier.padding(8.dp))
 
-            Button(
-                onClick = {
-                    deleteConfirmationRequired = true
-                },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(text = "Delete")
+            Row {
+                IconButton(
+                    onClick = {
+                        deleteConfirmationRequired = true
+                    },
+                ) {
+                    Icon(imageVector = Icons.Default.Delete, contentDescription = "Lihat Detail")
+                }
+                Spacer(Modifier.weight(1f))
+                IconButton(onClick = { navigateToItemUpdate() }) {
+                    Icon(imageVector = Icons.Default.Edit, contentDescription = "Lihat Detail")
+                }
             }
 
             if (deleteConfirmationRequired) {

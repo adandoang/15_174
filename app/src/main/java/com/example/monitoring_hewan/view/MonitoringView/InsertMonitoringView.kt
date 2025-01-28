@@ -115,6 +115,16 @@ fun EntryBody(
     dokterHewanList: List<Petugas>,
     context: Context
 ){
+
+    val isFormValid =
+            insertUiState.insertUiEvent.id_monitoring.isNotEmpty() &&
+            insertUiState.insertUiEvent.id_petugas.isNotEmpty() &&
+            insertUiState.insertUiEvent.id_kandang.isNotEmpty()&&
+            insertUiState.insertUiEvent.tanggal_monitoring.isNotEmpty()&&
+            insertUiState.insertUiEvent.hewan_sakit.toString().isNotEmpty()&&
+            insertUiState.insertUiEvent.hewan_sehat.toString().isNotEmpty()&&
+            insertUiState.insertUiEvent.status.toString().isNotEmpty()
+
     Column (
         verticalArrangement = Arrangement.spacedBy(18.dp),
         modifier = modifier.padding(12.dp)
@@ -130,7 +140,8 @@ fun EntryBody(
         Button(
             onClick = onSaveClick,
             shape = MaterialTheme.shapes.small,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            enabled = isFormValid
         ) {
             Text(text = "Simpan")
         }
@@ -157,14 +168,13 @@ fun FormInput(
     var selectedPetugas by remember { mutableStateOf("") }
     var showDateTimePicker by remember { mutableStateOf(false) }
 
-    LaunchedEffect(insertUiEvent) {
+    LaunchedEffect(insertUiEvent, kandangList, dokterHewanList) {
         val kandang = kandangList.find { it.id_kandang == insertUiEvent.id_kandang }
         val petugas = dokterHewanList.find { it.id_petugas == insertUiEvent.id_petugas }
 
         selectedKandang = kandang?.let { "${it.id_kandang} - ${it.nama_hewan}" } ?: ""
         selectedPetugas = petugas?.let { "${it.id_petugas} - ${it.nama_petugas}" } ?: ""
     }
-
 
     Column (
         modifier = modifier,

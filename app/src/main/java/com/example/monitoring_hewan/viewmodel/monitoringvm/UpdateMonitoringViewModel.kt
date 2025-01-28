@@ -25,28 +25,44 @@ class UpdateMonitoringViewModel(
     private val ptgs: PetugasRepository,
     private val hwn: HewanRepository
 ) : ViewModel() {
+    // State untuk UI
     var UpdateUiState by mutableStateOf(InsertUiState())
         private set
-    var kdglist by mutableStateOf<List<Kandang>>(listOf())
-    var petugasList by mutableStateOf<List<Petugas>>(listOf())
-    var dokterHewanPetugas by mutableStateOf<List<Petugas>>(listOf())
+    var kdglist by mutableStateOf<List<Kandang>>(emptyList())
+        private set
+    var dokterHewanPetugas by mutableStateOf<List<Petugas>>(emptyList())
+        private set
 
     private val _id_monitoring: String = checkNotNull(savedStateHandle[DestinasiUpdateMonitoring.ID_MONITORING])
 
     init {
         viewModelScope.launch {
-            val monitoring = mtr.getMonitoringByid_monitoring(_id_monitoring).toUiStateMtr()
-            UpdateUiState = monitoring
+            try {
+                // Ambil data monitoring terlebih dahulu
+                val monitoring = mtr.getMonitoringByid_monitoring(_id_monitoring).toUiStateMtr()
+                UpdateUiState = monitoring
 
+                // Ambil data pendukung (kandang & dokter hewan)
+                loadDependencies(monitoring)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private suspend fun loadDependencies(monitoring: InsertUiState) {
+        try {
+            // Ambil data kandang dan dokter hewan
             getKandang()
             getDokterHewanPetugas()
 
+            // Cocokkan data yang sudah ada
             val selectedKandang = kdglist.find { it.id_kandang == monitoring.insertUiEvent.id_kandang }
             val selectedPetugas = dokterHewanPetugas.find { it.id_petugas == monitoring.insertUiEvent.id_petugas }
 
-            selectedKandang?.let {
-                updateInsertMtrState(monitoring.insertUiEvent, it, selectedPetugas)
-            }
+            updateInsertMtrState(monitoring.insertUiEvent, selectedKandang, selectedPetugas)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -55,8 +71,10 @@ class UpdateMonitoringViewModel(
             try {
                 val petugasData = ptgs.getPetugas()
                 dokterHewanPetugas = petugasData.data.filter { it.jabatan == "Dokter Hewan" }
-            } catch (e: Exception) {
-                e.printStackTrace()
+            } catch (e: IOException) {
+                println("Failed to fetch dokter hewan: ${e.message}")
+            } catch (e: HttpException) {
+                println("HTTP error while fetching dokter hewan: ${e.message()}")
             }
         }
     }
@@ -74,7 +92,9 @@ class UpdateMonitoringViewModel(
 
                 kdglist = kandangWithNamaHewan
             } catch (e: IOException) {
+                println("Failed to fetch kandang: ${e.message}")
             } catch (e: HttpException) {
+                println("HTTP error while fetching kandang: ${e.message()}")
             }
         }
     }

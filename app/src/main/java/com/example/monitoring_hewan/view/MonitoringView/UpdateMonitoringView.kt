@@ -41,9 +41,15 @@ fun UpdateScreenMonitoring(
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val context = LocalContext.current
 
-    kdgviewModel.getKdg()
-    viewModel.getKandang()
-    viewModel.getDokterHewanPetugas()
+    LaunchedEffect(Unit) {
+        kdgviewModel.getKdg()
+        viewModel.getKandang()
+        viewModel.getDokterHewanPetugas()
+
+        println("Kandang List: ${viewModel.kdglist}")
+        println("Dokter Hewan List: ${viewModel.dokterHewanPetugas}")
+    }
+
 
     Scaffold (
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),

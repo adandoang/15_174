@@ -90,6 +90,14 @@ fun EntryBody(
     onSaveClick: ()->Unit,
     modifier: Modifier = Modifier
 ){
+
+    val isFormValid =
+                insertUiState.insertUiEvent.id_hewan.isNotEmpty() &&
+                insertUiState.insertUiEvent.nama_hewan.isNotEmpty()&&
+                insertUiState.insertUiEvent.tipe_pakan.isNotEmpty()&&
+                insertUiState.insertUiEvent.populasi.toString().isNotEmpty()&&
+                insertUiState.insertUiEvent.zona_wilayah.isNotEmpty()
+
     Column (
         verticalArrangement = Arrangement.spacedBy(18.dp),
         modifier = modifier.padding(12.dp)
@@ -102,7 +110,8 @@ fun EntryBody(
         Button(
             onClick = onSaveClick,
             shape = MaterialTheme.shapes.small,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            enabled = isFormValid
         ) {
             Text(text = "Simpan")
         }
@@ -176,7 +185,7 @@ fun FormInput(
             label = { Text("Populasi") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
-            singleLine = true
+            singleLine = true,
         )
         OutlinedTextField(
             value = insertUiEvent.zona_wilayah,

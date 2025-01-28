@@ -90,6 +90,11 @@ fun EntryBody(
     onSaveClick: ()->Unit,
     modifier: Modifier = Modifier
 ){
+
+    val isFormValid = insertUiState.insertUiEvent.id_petugas.isNotEmpty() &&
+            insertUiState.insertUiEvent.nama_petugas.isNotEmpty() &&
+            insertUiState.insertUiEvent.jabatan.isNotEmpty()
+
     Column (
         verticalArrangement = Arrangement.spacedBy(18.dp),
         modifier = modifier.padding(12.dp)
@@ -102,7 +107,8 @@ fun EntryBody(
         Button(
             onClick = onSaveClick,
             shape = MaterialTheme.shapes.small,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            enabled = isFormValid
         ) {
             Text(text = "Simpan")
         }

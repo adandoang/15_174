@@ -19,17 +19,40 @@ sealed class HomeUiState{
 }
 
 class HomeKandangViewModel (
-    private val
+    val
     kdg: KandangRepository,
     private val
     hwn: HewanRepository
 ):ViewModel() {
-    private var _kdgUIState: HomeUiState by mutableStateOf(HomeUiState.Loading)
+    var _kdgUIState: HomeUiState by mutableStateOf(HomeUiState.Loading)
     val kdgUIState: HomeUiState
         get() = _kdgUIState
 
     init {
         getKdg()
+    }
+
+    fun searchKdg(query: String) {
+        viewModelScope.launch {
+            _kdgUIState = HomeUiState.Loading
+            try {
+                val kandangList = kdg.getKandang().data
+                val hewanList = hwn.getHewan().data
+
+                val filteredKandang = kandangList.filter {
+                    it.id_kandang.contains(query, ignoreCase = true)
+                }.map { kandang ->
+                    val namaHewan = hewanList.find { it.id_hewan == kandang.id_hewan }?.nama_hewan ?: "Unknown"
+                    kandang.copy(nama_hewan = namaHewan)
+                }
+
+                _kdgUIState = HomeUiState.Success(filteredKandang)
+            } catch (e: IOException) {
+                _kdgUIState = HomeUiState.Error
+            } catch (e: HttpException) {
+                _kdgUIState = HomeUiState.Error
+            }
+        }
     }
 
     fun getKdg() {

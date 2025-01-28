@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -169,11 +170,11 @@ fun PtgsLayout(
             PtgsCard(
                 petugas = petugas,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onDetailClick(petugas) },
+                    .fillMaxWidth(),
                 onDeleteClick = {
                     onDeleteClick(petugas)
-                }
+                },
+                onDetailClick = onDetailClick
             )
         }
     }
@@ -183,12 +184,13 @@ fun PtgsLayout(
 fun PtgsCard(
     petugas: Petugas,
     modifier: Modifier = Modifier,
-    onDeleteClick: (Petugas) -> Unit ={}
+    onDeleteClick: (Petugas) -> Unit ={},
+    onDetailClick: (Petugas) -> Unit ={}
 ){
     Card (
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ){
         Column (
             modifier = Modifier.padding(16.dp),
@@ -208,10 +210,19 @@ fun PtgsCard(
                     style = MaterialTheme.typography.titleMedium
                 )
             }
-            Text(
-                text = petugas.jabatan,
-                style = MaterialTheme.typography.titleMedium
-            )
+            Row (
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Text(
+                    text = petugas.jabatan,
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Spacer(Modifier.weight(1f))
+                IconButton(onClick = { onDetailClick(petugas) }) {
+                    Icon(imageVector = Icons.Default.KeyboardArrowRight, contentDescription = "Lihat Detail")
+                }
+            }
         }
     }
 }

@@ -12,11 +12,11 @@ import com.example.monitoring_hewan.repository.KandangRepository
 import com.example.monitoring_hewan.view.kandangview.DestinasiUpdateKandang
 import kotlinx.coroutines.launch
 
-class UpdateKandangViewModel (
+class UpdateKandangViewModel(
     savedStateHandle: SavedStateHandle,
     private val kdg: KandangRepository,
     private val hwn: HewanRepository
-): ViewModel(){
+) : ViewModel() {
 
     var UpdateUiState by mutableStateOf(InsertUiState())
         private set
@@ -28,6 +28,7 @@ class UpdateKandangViewModel (
         viewModelScope.launch {
             UpdateUiState = kdg.getKandangByid_kandang(_id_kandang)
                 .toUiStateKdg()
+            getHewan()
         }
     }
 
@@ -36,21 +37,21 @@ class UpdateKandangViewModel (
             try {
                 val hwndata = hwn.getHewan()
                 hwnlist = hwndata.data
-            }catch (e: Exception) {
-
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
 
-    fun updateInsertKdgState(insertUiEvent: InsertUiEvent){
+    fun updateInsertKdgState(insertUiEvent: InsertUiEvent) {
         UpdateUiState = InsertUiState(insertUiEvent = insertUiEvent)
     }
 
-    suspend fun updateKdg(){
+    suspend fun updateKdg() {
         viewModelScope.launch {
             try {
                 kdg.updateKandang(_id_kandang, UpdateUiState.insertUiEvent.toKdg())
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }

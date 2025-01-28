@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -65,15 +66,14 @@ fun DetailScreenMonitoring(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
+            Button(
                 onClick = navigateToItemUpdate,
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(18.dp)
             ) {
-                Icon(
-                    imageVector = Icons.Default.Edit,
-                    contentDescription = "Edit Monitoring"
-                )
+                Icon(imageVector = Icons.Default.Edit, contentDescription = "Update Monitoring")
+                Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+                Text("Edit Monitoring")
             }
         }
     ) { innerPadding ->

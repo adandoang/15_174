@@ -16,7 +16,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -125,7 +129,6 @@ fun HomeStatus(
     }
 }
 
-//Homescreen menampilkan loading message
 @Composable
 fun OnLoading(modifier: Modifier = Modifier){
     Image(
@@ -135,7 +138,6 @@ fun OnLoading(modifier: Modifier = Modifier){
     )
 }
 
-//Homescreen menampilkan error message
 @Composable
 fun OnError(retryAction: ()->Unit, modifier: Modifier = Modifier){
     Column (
@@ -169,11 +171,12 @@ fun MtrLayout(
             MtrCard(
                 monitoring = monitoring,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onDetailClick(monitoring) },
+                    .fillMaxWidth(),
                 onDeleteClick = {
                     onDeleteClick(monitoring)
-                }
+                },
+                onDetailClick =
+                    onDetailClick
             )
         }
     }
@@ -183,12 +186,13 @@ fun MtrLayout(
 fun MtrCard(
     monitoring: Monitoring,
     modifier: Modifier = Modifier,
+    onDetailClick: (Monitoring) -> Unit = {},
     onDeleteClick: (Monitoring) -> Unit ={}
 ){
     Card (
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ){
         Column (
             modifier = Modifier.padding(16.dp),
@@ -209,13 +213,22 @@ fun MtrCard(
                 )
             }
             Text(
-                text = monitoring.tanggal_monitoring,
-                style = MaterialTheme.typography.titleMedium
-            )
-            Text(
                 text = monitoring.status,
                 style = MaterialTheme.typography.titleMedium
             )
+            Row (
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Text(
+                    text = monitoring.tanggal_monitoring,
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Spacer(Modifier.weight(1f))
+                IconButton(onClick = { onDetailClick(monitoring) }) {
+                    Icon(imageVector = Icons.Default.KeyboardArrowRight, contentDescription = "Lihat Detail")
+                }
+            }
         }
     }
 }

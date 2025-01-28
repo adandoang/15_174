@@ -5,7 +5,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -32,16 +37,21 @@ object DestinasiUpdateKandang: DestinasiNavigasi {
 fun UpdateScreenKandang(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
-    onNavigate:()-> Unit,
+    onNavigate: () -> Unit,
     viewModel: UpdateKandangViewModel = viewModel(factory = PenyediaViewModel.Factory),
-){
+) {
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-    val hwnList = viewModel.hwnlist
 
-    viewModel.getHewan()
+    var selectedHewanName by remember { mutableStateOf("") }
 
-    Scaffold (
+    // Gunakan LaunchedEffect untuk memantau perubahan pada hwnlist dan id_hewan
+    LaunchedEffect(viewModel.hwnlist, viewModel.UpdateUiState.insertUiEvent.id_hewan) {
+        val selectedHewan = viewModel.hwnlist.find { it.id_hewan == viewModel.UpdateUiState.insertUiEvent.id_hewan }
+        selectedHewanName = selectedHewan?.nama_hewan ?: ""
+    }
+
+    Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             CostumeTopAppBar(
@@ -51,7 +61,7 @@ fun UpdateScreenKandang(
                 navigateUp = onBack,
             )
         }
-    ){ padding ->
+    ) { padding ->
         EntryBody(
             modifier = Modifier.padding(padding),
             insertUiState = viewModel.UpdateUiState,
@@ -60,12 +70,11 @@ fun UpdateScreenKandang(
                 coroutineScope.launch {
                     viewModel.updateKdg()
                     delay(600)
-                    withContext(Dispatchers.Main) {
-                        onNavigate()
-                    }
+                    onNavigate()
                 }
             },
-            hewanList = hwnList
+            hewanList = viewModel.hwnlist,
+            selectedHewanName = selectedHewanName
         )
     }
 }

@@ -21,6 +21,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -85,7 +86,8 @@ fun EntryScreenKandang(
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
                 .fillMaxWidth(),
-            hewanList = viewModel.hwnlist
+            hewanList = viewModel.hwnlist,
+            selectedHewanName = String()
         )
     }
 }
@@ -93,27 +95,35 @@ fun EntryScreenKandang(
 @Composable
 fun EntryBody(
     insertUiState: InsertUiState,
-    onKandangValueChange: (InsertUiEvent)->Unit,
-    onSaveClick: ()->Unit,
+    onKandangValueChange: (InsertUiEvent) -> Unit,
+    onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
-    hewanList: List<Hewan>
+    hewanList: List<Hewan>,
+    selectedHewanName: String
+) {
 
+    val isFormValid =
+                insertUiState.insertUiEvent.id_kandang.isNotEmpty() &&
+                insertUiState.insertUiEvent.id_hewan.isNotEmpty() &&
+                insertUiState.insertUiEvent.kapasitas.toString().isNotEmpty()&&
+                insertUiState.insertUiEvent.lokasi.isNotEmpty()
 
-){
-    Column (
+    Column(
         verticalArrangement = Arrangement.spacedBy(18.dp),
         modifier = modifier.padding(12.dp)
-    ){
+    ) {
         FormInput(
             insertUiEvent = insertUiState.insertUiEvent,
             onValueChange = onKandangValueChange,
             modifier = Modifier.fillMaxWidth(),
-            hewanList = hewanList
+            hewanList = hewanList,
+            selectedHewanName = selectedHewanName
         )
         Button(
             onClick = onSaveClick,
             shape = MaterialTheme.shapes.small,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            enabled = isFormValid
         ) {
             Text(text = "Simpan")
         }
@@ -125,21 +135,26 @@ fun EntryBody(
 fun FormInput(
     insertUiEvent: InsertUiEvent,
     modifier: Modifier = Modifier,
-    onValueChange: (InsertUiEvent)->Unit={},
+    onValueChange: (InsertUiEvent) -> Unit = {},
     enabled: Boolean = true,
     hewanList: List<Hewan>,
-
+    selectedHewanName: String
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedHewanName by remember { mutableStateOf("") }
+    var localselectedHewanName by remember { mutableStateOf(selectedHewanName) }
 
-    Column (
+    // Perbarui localselectedHewanName jika selectedHewanName berubah
+    LaunchedEffect(selectedHewanName) {
+        localselectedHewanName = selectedHewanName
+    }
+
+    Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(12.dp)
-    ){
+    ) {
         OutlinedTextField(
             value = insertUiEvent.id_kandang,
-            onValueChange = {onValueChange(insertUiEvent.copy(id_kandang = it))},
+            onValueChange = { onValueChange(insertUiEvent.copy(id_kandang = it)) },
             label = { Text("ID Kandang") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
@@ -151,8 +166,8 @@ fun FormInput(
             onExpandedChange = { expanded = !expanded },
         ) {
             OutlinedTextField(
-                value = selectedHewanName,
-                onValueChange = {},
+                value = localselectedHewanName,
+                onValueChange = { localselectedHewanName = it },
                 readOnly = true,
                 label = { Text("Nama Hewan") },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
@@ -167,7 +182,7 @@ fun FormInput(
                     DropdownMenuItem(
                         text = { Text(hewan.nama_hewan) },
                         onClick = {
-                            selectedHewanName = hewan.nama_hewan
+                            localselectedHewanName = hewan.nama_hewan
                             onValueChange(insertUiEvent.copy(id_hewan = hewan.id_hewan))
                             expanded = false
                         },
@@ -196,13 +211,13 @@ fun FormInput(
 
         OutlinedTextField(
             value = insertUiEvent.lokasi,
-            onValueChange = {onValueChange(insertUiEvent.copy(lokasi = it))},
+            onValueChange = { onValueChange(insertUiEvent.copy(lokasi = it)) },
             label = { Text("Lokasi") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true
         )
-        if (enabled){
+        if (enabled) {
             Text(
                 text = "Isi Semua Data",
                 modifier = Modifier.padding(12.dp)

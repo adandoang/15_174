@@ -17,12 +17,28 @@ sealed class HomeUiState{
     object Loading: HomeUiState()
 }
 
-class HomeHewanViewModel (private val hwn: HewanRepository):ViewModel() {
+class HomeHewanViewModel (val hwn: HewanRepository):ViewModel() {
     var hwnUIState: HomeUiState by mutableStateOf(HomeUiState.Loading)
-        private set
+
 
     init {
         getHwn()
+    }
+
+    fun searchHwn(query: String) {
+        viewModelScope.launch {
+            hwnUIState = HomeUiState.Loading
+            hwnUIState = try {
+                val filteredHewan = hwn.getHewan().data.filter {
+                    it.nama_hewan.contains(query, ignoreCase = true)
+                }
+                HomeUiState.Success(filteredHewan)
+            } catch (e: java.io.IOException) {
+                HomeUiState.Error
+            } catch (e: HttpException) {
+                HomeUiState.Error
+            }
+        }
     }
 
     fun getHwn(){
