@@ -48,146 +48,147 @@ fun Home(
     onButtonClickKdg: () -> Unit,
     onButtonClickPtgs: () -> Unit,
     onButtonClickMtr: () -> Unit,
-
-    ) {
-    Box(
+) {
+    Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(10.dp),
-        contentAlignment = Alignment.Center
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
+        Text(
+            text = "Monitoring Hewan",
+            fontSize = 34.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF354A5F) ,
+            modifier = Modifier.padding(top = 120.dp).padding(bottom = 80.dp)
+        )
+
+        Box(
             modifier = Modifier
-                .wrapContentSize()
+                .fillMaxSize()
                 .padding(10.dp),
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            contentAlignment = Alignment.TopCenter
         ) {
-            // Item 1: Kandang
-            item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(1f)
-                        .padding(10.dp),
-                    shape = RoundedCornerShape(16.dp)
-                ) {
-                    Column(
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(10.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                item {
+                    Card(
                         modifier = Modifier
-                            .fillMaxSize()
+                            .fillMaxWidth()
+                            .aspectRatio(1f)
                             .padding(10.dp),
-                        verticalArrangement = Arrangement.Center, // Memusatkan konten secara vertikal
-                        horizontalAlignment = Alignment.CenterHorizontally // Memusatkan konten secara horizontal
+                        shape = RoundedCornerShape(16.dp)
                     ) {
-                        Image(
-                            painter = painterResource(R.drawable.kandang),
-                            contentDescription = "",
-                            modifier = Modifier.size(100.dp)
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Button(
-                            onClick = onButtonClickKdg
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(10.dp),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(text = "Kandang")
+                            Image(
+                                painter = painterResource(R.drawable.kandang),
+                                contentDescription = "",
+                                modifier = Modifier.size(100.dp)
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Button(onClick = onButtonClickKdg) {
+                                Text(text = "Kandang")
+                            }
                         }
                     }
                 }
-            }
 
-            // Item 2: Hewan
-            item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(1f)
-                        .padding(10.dp),
-                    shape = RoundedCornerShape(16.dp),
-                ) {
-                    Column(
+                item {
+                    Card(
                         modifier = Modifier
-                            .fillMaxSize()
+                            .fillMaxWidth()
+                            .aspectRatio(1f)
                             .padding(10.dp),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        shape = RoundedCornerShape(16.dp),
                     ) {
-                        Image(
-                            painter = painterResource(R.drawable.hewan),
-                            contentDescription = "",
-                            modifier = Modifier.size(100.dp)
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Button(
-                            onClick = onButtonClickHwn
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(10.dp),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(text = "Hewan")
+                            Image(
+                                painter = painterResource(R.drawable.hewan),
+                                contentDescription = "",
+                                modifier = Modifier.size(100.dp)
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Button(onClick = onButtonClickHwn) {
+                                Text(text = "Hewan")
+                            }
                         }
                     }
                 }
-            }
 
-            // Item 3: Petugas
-            item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(1f)
-                        .padding(10.dp),
-                    shape = RoundedCornerShape(16.dp)
-                ) {
-                    Column(
+                item {
+                    Card(
                         modifier = Modifier
-                            .fillMaxSize()
+                            .fillMaxWidth()
+                            .aspectRatio(1f)
                             .padding(10.dp),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        shape = RoundedCornerShape(16.dp)
                     ) {
-                        Image(
-                            painter = painterResource(R.drawable.petugas),
-                            contentDescription = "",
-                            modifier = Modifier.size(100.dp)
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Button(
-                            onClick = onButtonClickPtgs
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(10.dp),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(text = "Petugas")
+                            Image(
+                                painter = painterResource(R.drawable.petugas),
+                                contentDescription = "",
+                                modifier = Modifier.size(100.dp)
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Button(onClick = onButtonClickPtgs) {
+                                Text(text = "Petugas")
+                            }
                         }
                     }
                 }
-            }
 
-            // Item 4: Monitoring
-            item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(1f)
-                        .padding(10.dp),
-                    shape = RoundedCornerShape(16.dp)
-                ) {
-                    Column(
+                item {
+                    Card(
                         modifier = Modifier
-                            .fillMaxSize()
+                            .fillMaxWidth()
+                            .aspectRatio(1f)
                             .padding(10.dp),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        shape = RoundedCornerShape(16.dp)
                     ) {
-                        Image(
-                            painter = painterResource(R.drawable.monitoring),
-                            contentDescription = "",
-                            modifier = Modifier.size(100.dp)
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Button(
-                            onClick = onButtonClickMtr
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(10.dp),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(text = "Monitoring")
+                            Image(
+                                painter = painterResource(R.drawable.monitoring),
+                                contentDescription = "",
+                                modifier = Modifier.size(100.dp)
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Button(onClick = onButtonClickMtr) {
+                                Text(text = "Monitoring")
+                            }
                         }
                     }
                 }
             }
         }
     }
-
 }
+
